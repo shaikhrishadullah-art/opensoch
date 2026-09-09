@@ -21,7 +21,6 @@
     --mid:210ms;               /* midpoint: tiles edge-on, invisible */
     --spread:calc(var(--t)*0.75);   /* cluster slide distance */
 
-    /* screen 4 state levels */
     /* wordmark block, placed on the tile grid. Fitted so every letterform
        pixel lands on a filled tile - a black letter over a gap is invisible,
        which is what broke the old overlay. Block aspect is 640:312. */
@@ -29,6 +28,7 @@
     --wm-left:6.75;            /* block origin, in tiles from the grid corner */
     --wm-top:6.75;
 
+    /* screen 4 state levels */
     --veil-neutral:.34;        /* all four, equal mid-brightness */
     --veil-dim:.68;            /* the three that are not live */
     --state:200ms;             /* cross-fade between region states */
