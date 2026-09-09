@@ -10,6 +10,8 @@
     --brain-w:min(520px,80vw);
     --t:calc(var(--brain-w)/var(--cols));
 
+    --black:#000; --white:#fff;
+
     --purple:#7B2382;   /* Experiences  top-left  */
     --blue:#0B63C5;     /* Coaching     top-right */
     --red:#D42A18;      /* Backstory    bottom-left */
@@ -20,6 +22,13 @@
     --spread:calc(var(--t)*0.75);   /* cluster slide distance */
 
     /* screen 4 state levels */
+    /* wordmark block, placed on the tile grid. Fitted so every letterform
+       pixel lands on a filled tile - a black letter over a gap is invisible,
+       which is what broke the old overlay. Block aspect is 640:312. */
+    --wm-cols:11.5;            /* block width, in tiles */
+    --wm-left:6.75;            /* block origin, in tiles from the grid corner */
+    --wm-top:6.75;
+
     --veil-neutral:.34;        /* all four, equal mid-brightness */
     --veil-dim:.68;            /* the three that are not live */
     --state:200ms;             /* cross-fade between region states */
@@ -27,7 +36,7 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
   body{
-    background:#000; color:#fff;
+    background:var(--black); color:var(--white);
     font-family:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
     display:flex; align-items:center; justify-content:center;
     min-height:100dvh; overflow:hidden;
@@ -57,7 +66,7 @@
   .tile{
     position:absolute;
     width:var(--t); height:var(--t);
-    background:#fff;
+    background:var(--white);
     transform:rotateY(90deg);
     opacity:0;
   }
@@ -154,14 +163,22 @@
   #stage.ready.live .label.is-live{ opacity:1 }
   .label:focus-visible{ opacity:1; outline:1px solid currentColor; outline-offset:.4em }
 
-  /* wordmark: black letterforms over the tiles. hidden at the flip midpoint. */
+  /* wordmark: black letterforms over the tiles. hidden at the flip midpoint.
+     Drawn as vector rather than a raster overlay - the letterforms are finer
+     than the tiles and cannot be expressed in them, but they can be drawn
+     exactly. Geometry is measured from the original artwork: a 5x5 module
+     grid, 26 unit stroke, 130 unit glyph, 170 advance, 182 line pitch. */
   #wordmark{
-    position:absolute; inset:0;
-    background:url(wordmark.png) center/100% 100% no-repeat;
+    position:absolute;
+    left:calc(var(--t) * var(--wm-left));
+    top:calc(var(--t) * var(--wm-top));
+    width:calc(var(--t) * var(--wm-cols));
+    height:calc(var(--t) * var(--wm-cols) * 312 / 640);
     pointer-events:none;
     opacity:1;
     transition:opacity 0ms var(--mid);
   }
+  #wordmark svg{ display:block; width:100%; height:100% }
   #stage.ready:is(:hover,.open) #wordmark{ opacity:0 }
 
   footer{
@@ -194,7 +211,21 @@
       <div class="glowreg glowreg--br"></div>
     </div>
   </div>
-  <div id="wordmark"></div>
+  <div id="wordmark">
+    <svg viewBox="124 192 640 312" role="img">
+      <title>OPEN SOCH</title>
+      <g fill="none" stroke="var(--black)" stroke-width="26" stroke-linejoin="round"><g fill="none" stroke="#000" stroke-width="26" stroke-linejoin="round">
+      <g transform="translate(124,192)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
+      <g transform="translate(294,192)"><path d="M13,117L13,26A13,13 0 0 1 26,13L104,13A13,13 0 0 1 117,26L117,52A13,13 0 0 1 104,65L13,65"/></g>
+      <g transform="translate(464,192)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117M13,65L117,65"/></g>
+      <g transform="translate(634,192)"><path d="M13,117L13,26A13,13 0 0 1 22.19,22.19L107.81,107.81A13,13 0 0 0 117,104L117,13"/></g>
+      <g transform="translate(124,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,52A13,13 0 0 0 26,65L104,65A13,13 0 0 1 117,78L117,104A13,13 0 0 1 104,117L13,117"/></g>
+      <g transform="translate(294,374)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
+      <g transform="translate(464,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117"/></g>
+      <g transform="translate(634,374)"><path d="M13,13L13,117M117,13L117,117M13,65L117,65"/></g>
+    </g>
+    </svg>
+  </div>
   <div id="labels">
     <button type="button" class="label label--tl" data-reg="tl">Experiences</button>
     <button type="button" class="label label--tr" data-reg="tr">Coaching</button>

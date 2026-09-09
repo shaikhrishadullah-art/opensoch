@@ -43,7 +43,13 @@ Tiles are square. Tile size on screen is derived: `--t: calc(var(--brain-w) / 23
 
 `OPEN SOCH` is drawn in HK Modular at roughly a 13px stroke weight on a ~19px tile grid. It is **finer than the tiles and cannot be expressed in them** — quantising it to the grid produces illegible shapes. This was tested; it does not work.
 
-**Current solution:** the letterforms are painted as a **black overlay above the tile layer** (`wordmark.png`, transparent except the letters). On a black background a black letterform is indistinguishable from a hole, so it reads as negative space carved into the brain — "it was always written there, you just couldn't see it."
+**Current solution:** the letterforms are painted as a **black overlay above the tile layer**, drawn as **inline SVG** in `index.html`. On a black background a black letterform is indistinguishable from a hole, so it reads as negative space carved into the brain — "it was always written there, you just couldn't see it."
+
+The overlay used to be `wordmark.png`. That export was faulty — it contained only five of the eight glyphs (`PE` / `OCH`; the `O` and `N` of OPEN and the `S` of SOCH were missing), so the assembled brain never showed the full wordmark. The PNG is kept in the repo as the metric reference only; nothing loads it.
+
+**Letterform geometry**, measured off that artwork and now expressed as vector: glyphs sit on a **5x5 module grid**, stroke **26 units**, glyph box **130**, advance **170**, line pitch **182**, outer corner radius **one stroke unit**. Each glyph is one centreline path stroked at 26 with round joins and butt caps. The five glyphs the PNG did contain match it to within antialiasing; **the `O`, `N` and `S` are reconstructions to the same measured system and should be checked against the real HK Modular file.**
+
+**Placement** is set on the tile grid by `--wm-cols` / `--wm-left` / `--wm-top` (block width and origin, in tiles), not by stretching an image to the brain's bounding box. The values are fitted so every letterform pixel lands on a filled tile: a black letter over a gap in the silhouette is invisible, and the old overlay's inherited size (16.7 tiles wide, ~93% of its ink on tiles) is what broke the `O` and `S`. At the current 11.5 tiles the block sits entirely inside the silhouette. Re-fit these three values if the tile map changes.
 
 Two consequences, both desirable:
 
