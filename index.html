@@ -17,6 +17,7 @@
     --red:#D42A18;      /* Backstory    bottom-left */
     --yellow:#F5D046;   /* Playground   bottom-right */
 
+    --heal:300ms;              /* grid seams dissolving into the solid logo */
     --flip:420ms;              /* full flip duration */
     --mid:210ms;               /* midpoint: tiles edge-on, invisible */
     --spread:calc(var(--t)*0.75);   /* cluster slide distance */
@@ -24,7 +25,7 @@
     /* wordmark block, placed on the tile grid. Fitted so every letterform
        pixel lands on a filled tile - a black letter over a gap is invisible,
        which is what broke the old overlay. Block aspect is 640:312. */
-    --wm-cols:11.5;            /* block width, in tiles */
+    --wm-cols:12;              /* block width, in tiles */
     --wm-left:6.75;            /* block origin, in tiles from the grid corner */
     --wm-top:6.75;
 
@@ -92,6 +93,32 @@
   .tile::after{ background:#fff; opacity:0 }
   .tile.fire::after{ animation:fire 340ms ease-out }
   @keyframes fire{ 0%{opacity:0} 20%{opacity:.92} 100%{opacity:0} }
+
+  /* ---- the assembled logo ----
+     The rest state is not 242 tiles, it is one path. Adjacent tiles are
+     subpaths of a single fill, so the edges they share are interior to that
+     fill and no seam is drawn between them - at any zoom, and under the
+     breathing scale, which is what made the grid show through before.
+     The tiles are only ever on screen for the intro and the hover. */
+  #solid{
+    position:absolute; inset:0; pointer-events:none;
+    opacity:0;
+    transition:opacity var(--heal) ease var(--flip);
+  }
+  #solid path{ fill:var(--white) }
+  #stage.ready #solid{ opacity:1 }
+  /* hovering hands the brain back to the tiles at once, so the grid is there
+     the instant the flip starts */
+  #stage.ready:is(:hover,.open) #solid{ opacity:0; transition:opacity 0ms }
+
+  /* tiles yield to the solid logo once it has covered them, and come back
+     instantly on hover. Never a fractional opacity mid-flip: that would make
+     a stacking context on .region and flatten preserve-3d underneath it. */
+  #stage.ready .region{
+    opacity:0;
+    transition:opacity 0ms calc(var(--flip) + var(--heal));
+  }
+  #stage.ready:is(:hover,.open) .region{ opacity:1; transition:opacity 0ms }
 
   /* ---- SCREEN 3: the flip ---- */
   /* transform runs the full duration; background-color swaps instantly at the
@@ -210,21 +237,24 @@
       <div class="glowreg glowreg--bl"></div>
       <div class="glowreg glowreg--br"></div>
     </div>
-  </div>
-  <div id="wordmark">
-    <svg viewBox="124 192 640 312" role="img">
-      <title>OPEN SOCH</title>
-      <g fill="none" stroke="var(--black)" stroke-width="26" stroke-linejoin="round"><g fill="none" stroke="#000" stroke-width="26" stroke-linejoin="round">
-      <g transform="translate(124,192)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-      <g transform="translate(294,192)"><path d="M13,117L13,26A13,13 0 0 1 26,13L104,13A13,13 0 0 1 117,26L117,52A13,13 0 0 1 104,65L13,65"/></g>
-      <g transform="translate(464,192)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117M13,65L117,65"/></g>
-      <g transform="translate(634,192)"><path d="M13,117L13,26A13,13 0 0 1 22.19,22.19L107.81,107.81A13,13 0 0 0 117,104L117,13"/></g>
-      <g transform="translate(124,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,52A13,13 0 0 0 26,65L104,65A13,13 0 0 1 117,78L117,104A13,13 0 0 1 104,117L13,117"/></g>
-      <g transform="translate(294,374)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-      <g transform="translate(464,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117"/></g>
-      <g transform="translate(634,374)"><path d="M13,13L13,117M117,13L117,117M13,65L117,65"/></g>
-    </g>
+    <svg id="solid" viewBox="0 0 23 19" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 0h1v1h-1zM19 0h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM4 2h1v1h-1zM9 2h1v1h-1zM10 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM14 2h1v1h-1zM15 2h1v1h-1zM22 2h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM5 3h1v1h-1zM6 3h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM13 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM20 3h1v1h-1zM21 3h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM6 5h1v1h-1zM7 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM18 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM8 6h1v1h-1zM9 6h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM14 6h1v1h-1zM15 6h1v1h-1zM16 6h1v1h-1zM20 6h1v1h-1zM1 7h1v1h-1zM2 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM7 7h1v1h-1zM8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM17 7h1v1h-1zM18 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM1 8h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM9 8h1v1h-1zM10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM18 8h1v1h-1zM19 8h1v1h-1zM20 8h1v1h-1zM21 8h1v1h-1zM0 9h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM21 9h1v1h-1zM22 9h1v1h-1zM0 10h1v1h-1zM1 10h1v1h-1zM2 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM19 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM1 11h1v1h-1zM2 11h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM20 11h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM20 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM8 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM2 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM4 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM21 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM18 17h1v1h-1zM19 17h1v1h-1zM18 18h1v1h-1zM19 18h1v1h-1z"/>
     </svg>
+    <div id="wordmark">
+      <svg viewBox="124 192 640 312" role="img">
+        <title>OPEN SOCH</title>
+        <g fill="none" stroke="var(--black)" stroke-width="26" stroke-linejoin="round"><g fill="none" stroke="#000" stroke-width="26" stroke-linejoin="round">
+        <g transform="translate(124,192)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
+        <g transform="translate(294,192)"><path d="M13,117L13,26A13,13 0 0 1 26,13L104,13A13,13 0 0 1 117,26L117,52A13,13 0 0 1 104,65L13,65"/></g>
+        <g transform="translate(464,192)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117M13,65L117,65"/></g>
+        <g transform="translate(634,192)"><path d="M13,117L13,26A13,13 0 0 1 22.19,22.19L107.81,107.81A13,13 0 0 0 117,104L117,13"/></g>
+        <g transform="translate(124,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,52A13,13 0 0 0 26,65L104,65A13,13 0 0 1 117,78L117,104A13,13 0 0 1 104,117L13,117"/></g>
+        <g transform="translate(294,374)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
+        <g transform="translate(464,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117"/></g>
+        <g transform="translate(634,374)"><path d="M13,13L13,117M117,13L117,117M13,65L117,65"/></g>
+      </g>
+      </svg>
+    </div>
   </div>
   <div id="labels">
     <button type="button" class="label label--tl" data-reg="tl">Experiences</button>

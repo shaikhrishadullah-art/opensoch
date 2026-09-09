@@ -49,7 +49,9 @@ The overlay used to be `wordmark.png`. That export was faulty — it contained o
 
 **Letterform geometry**, measured off that artwork and now expressed as vector: glyphs sit on a **5x5 module grid**, stroke **26 units**, glyph box **130**, advance **170**, line pitch **182**, outer corner radius **one stroke unit**. Each glyph is one centreline path stroked at 26 with round joins and butt caps. The five glyphs the PNG did contain match it to within antialiasing; **the `O`, `N` and `S` are reconstructions to the same measured system and should be checked against the real HK Modular file.**
 
-**Placement** is set on the tile grid by `--wm-cols` / `--wm-left` / `--wm-top` (block width and origin, in tiles), not by stretching an image to the brain's bounding box. The values are fitted so every letterform pixel lands on a filled tile: a black letter over a gap in the silhouette is invisible, and the old overlay's inherited size (16.7 tiles wide, ~93% of its ink on tiles) is what broke the `O` and `S`. At the current 11.5 tiles the block sits entirely inside the silhouette. Re-fit these three values if the tile map changes.
+**Placement** is set on the tile grid by `--wm-cols` / `--wm-left` / `--wm-top` (block width and origin, in tiles), not by stretching an image to the brain's bounding box. The values are fitted so every letterform pixel lands on a filled tile: a black letter over a gap in the silhouette is invisible. Currently **12 / 6.75 / 6.75**, measured at zero ink off the silhouette. Re-fit if the tile map changes.
+
+**Unresolved — the wordmark does not fit at its real proportion.** Measured off the official logo, the block is about **16.5 tiles wide at left ~3.15, top ~4.85**, and the letters there are fully carved. On this tile map they are not: past ~13 tiles the `N` and the `H` run off the silhouette, and at 16.5 no placement anywhere on the grid gets above ~93% of the ink onto tiles. So the tile map and the official artwork disagree — the silhouette here is narrower through the `OPEN` band than the real one. The 12-tile setting is a holding value that keeps every letter intact; it is **not** the official proportion. Resolving this needs the official logo as a file, so the tile map and the wordmark placement can both be re-derived from it rather than estimated.
 
 Two consequences, both desirable:
 
@@ -61,6 +63,20 @@ Two consequences, both desirable:
 **Removal on flip:** the wordmark is hidden at the **midpoint of the flip**, when every tile is edge-on at 90 degrees and effectively invisible. It is never seen to fade — there is nothing on screen when it goes.
 
 **Future:** the wordmark will eventually be redrawn on the grid. When that happens, delete the overlay and mark those tiles empty in the map. No other part of the architecture changes.
+
+### The rest state is one shape, not 242 tiles
+
+Once the intro has assembled, the brain hands over to `#solid`: a single SVG `<path>` whose subpaths are the 242 tiles. Adjacent tiles are subpaths of one fill, so the edges they share are interior to that fill and no seam is drawn between them — at any zoom, and under the breathing scale, which is what made the tile grid show through the white logo before.
+
+The tiles are only on screen for the **intro** and the **hover**. The handover:
+
+- intro ends → `#solid` fades up over `--heal` (300ms) on top of the finished tiles, then the tiles drop out. The seams heal into the logo.
+- hover starts → `#solid` goes at once and the tiles are back, so the grid is there the instant the flip starts. The grid appearing *is* the transition.
+- hover ends → tiles flip home over `--flip`, then `#solid` fades back up and the tiles drop out again.
+
+Opacity on `.region` is only ever 0 or 1, never in between: a fractional opacity there makes a stacking context and flattens `preserve-3d` on the tiles beneath it, which breaks the flip exactly the way `mask-image` does.
+
+`#solid` and `#wordmark` both live **inside** `#brain` so they ride the breathing transform. The wordmark used to be a sibling of `#brain` and did not, so the letters drifted against the silhouette over the 6s cycle.
 
 ## 4. Region map
 
@@ -107,6 +123,7 @@ Runs on **every visit**. No first-visit-only cookie.
 
 The entire home page. Brain floating centre, nothing else but the footer.
 
+- The brain at rest is the **solid logo** — one filled shape, no tile grid. See "The rest state is one shape" in section 3.
 - Idle motion: a slow breathing/drift, enough to read as alive and invite the cursor. Subtle — this is an invitation, not a performance.
 - No scroll. No nav. No headline.
 - **Footer:** one quiet line at the bottom of the viewport — contact, privacy policy, copyright. Small, low-contrast, permanent across all states.
@@ -174,4 +191,5 @@ Placement is unresolved — see open items. Whatever is chosen must survive four
 1. **Touch.** There is no hover on mobile. The entire interaction model depends on it. Needs a decision before this ships — not before it's built, but before it's public.
 2. **Label placement.** Floating near the live region, or fixed toward its corner outside the brain.
 3. **Confirmed hex values** from Canva.
+4. **The official logo as a file.** The tile map cannot host the wordmark at its real proportion (see section 3). Until the artwork is supplied, the rest state is a close reconstruction, not the official logo. With the file, the tile map and the wordmark placement can both be re-derived from it and every state becomes the real artwork.
 4. ~~Region cut lines~~ — **resolved.** Straight centre split: between columns 11 and 12, between rows 9 and 10. No tile falls on a line. Loose pixels are assigned automatically by coordinate. Tile counts: purple 73, blue 64, red 46, yellow 59.
