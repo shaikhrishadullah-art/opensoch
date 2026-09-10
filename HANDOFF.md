@@ -32,18 +32,22 @@ then `http://localhost:8000`. It will open from `file://` too, but serve it if y
 
 Screens 1–4 of the spec, all on the home page:
 
-1. **Intro** — a seed tile throbs at centre, tiles flip white outward in a radial wave. Any click or keypress skips to the assembled state.
-2. **Rest** — the assembled logo, breathing slowly. Footer.
-3. **Hover** — every tile flips 180° to its region colour, the four clusters slide apart on their diagonals, the wordmark goes.
-4. **Region states** — per-tile region detection, live region glows with neuron pulses, other three dim, labels appear. Neutral state when the cursor is inside the box but not on a tile.
+1. **Load sequence** — three beats. The tile preloader assembles; the solid white logo holds; it dissolves to reveal the four region colours. Any click or keypress skips straight to the colour state. About 3.5s end to end.
+2. **Rest** — the four colours, whole and joined, tile grid visible, breathing slowly. Footer. No wordmark, no labels.
+3. **Hover** — every tile flips 180°, the four clusters slide apart on their diagonals, the label appears. Colour does not change; it is already there.
+4. **Region states** — per-tile region detection, live region glows with neuron pulses, other three dim. Neutral state when the cursor is inside the box but not on a tile.
 
-Keyboard works: the four labels are tabbable and light their own region.
+Clicking any tile goes to that region's route. Keyboard works: the four labels are tabbable links that light their own region.
 
 ## What is not built
 
-- **The four detail pages and any routing.** The labels are `<button>`s that do nothing.
+- **The four detail pages.** The regions and labels link to `/experiences`, `/coaching`, `/backstory` and `/playground`; nothing serves those paths yet.
 - **Touch.** There is no hover on mobile and the whole interaction model depends on it. This is open item 1 in the spec and it needs a decision before launch.
 - **The glitch transition.** The grid currently appears and disappears on a clean cut. The brief allows it to fade in glitchily between hovers; that was left until the logo itself is settled.
+
+## Routes
+
+`ROUTES` in the script maps each region to its path, and the four labels carry the same paths as `href`s. Clicking a tile navigates; clicking a notch between regions does nothing, because detection is the same per-tile test the hover uses.
 
 ## The open blocker: the official logo
 
@@ -69,21 +73,22 @@ The current setting (12 / 6.75 / 6.75) is measured at zero ink off the silhouett
 
 If the flip suddenly looks flat, this is what happened. Check `getComputedStyle(tile).transform` — it should be a `matrix3d`, not a `matrix`.
 
-**2. The colour swap happens at the flip midpoint, on purpose.**
+**2. Screen 4 paints through pseudo-elements, not the tile's own background.**
 
-Tiles change colour instantly at `--mid` (210ms), when they are edge-on at 90° and cannot be seen changing. That is why the tile's transition reads `background-color 0ms var(--mid)`. The colour is never seen to fade because there is nothing on screen when it changes. Don't "fix" it into a smooth transition.
+The dimming rides on a `::before` veil and the pulses on an `::after` flash. Keep them there. The tile's own `background-color` carries the region colour and nothing else should compete for it.
 
-Screen 4's dimming rides on a `::before` veil and the pulses on a `::after` flash, precisely so neither competes with that `background-color` rule.
+(Historical note, because the code used to be full of it: colour used to arrive on hover, and the swap was hidden at the flip's midpoint via `background-color 0ms var(--mid)` — instant, at 90°, when the tile is edge-on and cannot be seen changing. Colour now arrives in the load sequence instead, so there is nothing left to hide and `--mid` is gone.)
 
-**3. The rest state is one shape; the tiles are only for the intro and the hover.**
+**3. The white logo is one shape, and it only exists during the load.**
 
 The white brain is a single SVG `<path>` (`#solid`) whose subpaths are the 242 tiles. Adjacent tiles are subpaths of one fill, so the edges they share are interior to that fill and no seam is drawn between them. This matters: as 242 separate elements the grid showed through the white logo, and snapping to whole pixels only fixed it at scale 1 — the brain breathes at up to 1.015, which puts every edge back on a fraction.
 
-The handover, all in CSS:
+The handover is one way, all in CSS:
 
-- intro ends → `#solid` fades up over the finished tiles across `--heal`, then the tiles drop out;
-- hover starts → `#solid` goes instantly and the tiles are back, so the grid is there the moment the flip starts;
-- hover ends → tiles flip home across `--flip`, then `#solid` fades back and the tiles drop out.
+- the wave lands → `#solid` fades up over the finished tiles across `--heal`, then the tiles drop out;
+- the logo holds → `#solid` dissolves across `--reveal` and the tiles, now coloured, take back over.
+
+After that `#solid` never returns. The colour state and the hover state are both tiles, grid and all.
 
 `#solid` and `#wordmark` both live **inside** `#brain` so they ride the breathing transform. Keep them there.
 
@@ -102,8 +107,9 @@ All in `:root` in `index.html`.
 | `--purple` `--blue` `--red` `--yellow` | Region colours. **Eyedropper guesses — still need confirming against Canva.** Everything else derives from these; no colour is hardcoded elsewhere. |
 | `--brain-w` | Overall size. JS snaps `--t` to a whole pixel from this on load and resize. |
 | `--spread` | How far the clusters slide apart. Spec says 0.5–1.0 tile; currently 0.75. |
-| `--flip` / `--mid` | Flip duration and its midpoint. **Keep `--mid` at half of `--flip`.** |
-| `--heal` | How long the seams take to dissolve into the solid logo. |
+| `--flip` | Flip duration. |
+| `--heal` | How long the seams take to dissolve into the white logo. |
+| `--reveal` | How long the white logo takes to dissolve into the colour state. |
 | `--wm-cols` / `--wm-left` / `--wm-top` | Wordmark block width and origin, in tiles. See below. |
 | `--veil-neutral` / `--veil-dim` | How far back the regions sit in the neutral state and when dimmed. |
 

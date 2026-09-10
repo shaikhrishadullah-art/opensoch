@@ -20,7 +20,7 @@ Plus **Backstory**, the company's own history.
 
 **In scope:** the home page only — screens 1 through 4 below.
 
-**Out of scope:** all four detail pages. Links resolve to placeholder routes.
+**Out of scope:** all four detail pages. The four regions are wired as links and resolve to placeholder routes (`/experiences`, `/coaching`, `/backstory`, `/playground`); the pages behind them are not built.
 
 **Explicit non-goals:** SEO, meta tags, structured data, analytics, marketing conventions. The home page is deliberately unconventional and content-light. Do not add hero copy, a nav bar, scroll sections, or a cookie banner. Do not propose changes on these grounds.
 
@@ -60,23 +60,28 @@ Two consequences, both desirable:
 
 **Do not use CSS `mask-image` on the brain container.** A mask creates a stacking context and will flatten `transform-style: preserve-3d` on the tiles beneath it, breaking the flip. The overlay approach avoids this entirely.
 
-**Removal on flip:** the wordmark is hidden at the **midpoint of the flip**, when every tile is edge-on at 90 degrees and effectively invisible. It is never seen to fade — there is nothing on screen when it goes.
+**Removal:** the wordmark dissolves together with the white logo it is carved from, at the end of the load sequence (section 5). It is not present in the colour state at all, so nothing has to remove it on hover.
 
 **Future:** the wordmark will eventually be redrawn on the grid. When that happens, delete the overlay and mark those tiles empty in the map. No other part of the architecture changes.
 
-### The rest state is one shape, not 242 tiles
+### The white logo is one shape, not 242 tiles
 
-Once the intro has assembled, the brain hands over to `#solid`: a single SVG `<path>` whose subpaths are the 242 tiles. Adjacent tiles are subpaths of one fill, so the edges they share are interior to that fill and no seam is drawn between them — at any zoom, and under the breathing scale, which is what made the tile grid show through the white logo before.
+The logo beat in the middle of the load sequence is `#solid`: a single SVG `<path>` whose subpaths are the 242 tiles. Adjacent tiles are subpaths of one fill, so the edges they share are interior to that fill and no seam is drawn between them — at any zoom, and under the breathing scale, which is what made the tile grid show through the white logo when it was 242 separate elements.
 
-The tiles are only on screen for the **intro** and the **hover**. The handover:
+`#solid` belongs to the load sequence only, and the handover runs one way:
 
-- intro ends → `#solid` fades up over `--heal` (300ms) on top of the finished tiles, then the tiles drop out. The seams heal into the logo.
-- hover starts → `#solid` goes at once and the tiles are back, so the grid is there the instant the flip starts. The grid appearing *is* the transition.
-- hover ends → tiles flip home over `--flip`, then `#solid` fades back up and the tiles drop out again.
+- the wave lands → `#solid` fades up over `--heal` (300ms) on top of the finished tiles, then the tiles drop out. The seams heal into the logo.
+- the logo holds → then `#solid` dissolves over `--reveal`, and the tiles — now their region colours — take back over.
+
+After that `#solid` never returns. The colour state and the hover state are both tiles, and the tile grid is visible in both, as it is in the reference artwork.
 
 Opacity on `.region` is only ever 0 or 1, never in between: a fractional opacity there makes a stacking context and flattens `preserve-3d` on the tiles beneath it, which breaks the flip exactly the way `mask-image` does.
 
 `#solid` and `#wordmark` both live **inside** `#brain` so they ride the breathing transform. The wordmark used to be a sibling of `#brain` and did not, so the letters drifted against the silhouette over the 6s cycle.
+
+### The midpoint colour swap is retired
+
+Colour now arrives in the load sequence rather than on hover, so by the time anything flips the tiles are already their region colour. There is no colour change left to hide inside the flip, and `--mid` is gone. Should a white-to-colour flip ever come back, the technique it replaced was: run the transform for the full duration but swap `background-color` with `0ms var(--mid)`, so the colour changes instantly at 90 degrees when the tile is edge-on and cannot be seen changing.
 
 ## 4. Region map
 
@@ -102,20 +107,23 @@ Note: "Backstory" replaces "Our Story" everywhere — nav label, route, page tit
 
 ---
 
-## 5. Screen 1 — Intro
+## 5. Screen 1 — Load sequence
 
-Runs on **every visit**. No first-visit-only cookie.
+Runs on **every visit**. No first-visit-only cookie. Three beats.
 
-1. Full black screen.
-2. One white tile throbs at dead centre.
-3. Tiles flip to white in sequence outward from that tile — *thak, thak, thak* — until the full brain has assembled.
-4. `OPEN SOCH` is never drawn. It emerges as the tiles that never flip.
+**Beat 1 — the preloader.** Full black screen. One white tile throbs at dead centre, then tiles flip to white in sequence outward from it — *thak, thak, thak* — until the full brain has assembled. `OPEN SOCH` is never drawn; it emerges as the tiles that never flip.
 
-**Timing:** total sequence 1.5–2.5s. Individual tile flip ~120–180ms, staggered.
+This is a real preloader, not a fixed-length animation. The sequence advances only when the wave has landed **and** the page's assets have decoded. With no external artwork that is just the wave, but adding the official logo as an `<img>` makes it genuinely awaited rather than raced.
 
-**Skip:** any click, tap, or key press snaps immediately to the completed white brain. This matters — the team will load this site many times a day and the animation must never become a toll.
+**Beat 2 — the logo.** The assembled tiles hand over to the solid white logo (section 3) and it holds, briefly. This is the only point in the site where the logo proper — white brain, `OPEN SOCH` carved out of it — is on screen.
 
-**Lock:** the brain is inert during assembly. Hover does nothing until the sequence completes or is skipped.
+**Beat 3 — the reveal.** The white logo and the wordmark dissolve together over `--reveal`, uncovering the four region colours underneath. That colour state is the home page.
+
+**Timing:** roughly 3.5s end to end; the constants are `HOLD`, `SPREAD`, `LOGO_HOLD` in the script and `--reveal` in `:root`.
+
+**Skip:** any click, tap, or key press snaps immediately to the colour state — past the logo, not to it. This matters — the team will load this site many times a day and the sequence must never become a toll.
+
+**Lock:** the brain is inert throughout. Hover does nothing until the reveal has finished or the sequence is skipped.
 
 ---
 
@@ -123,7 +131,9 @@ Runs on **every visit**. No first-visit-only cookie.
 
 The entire home page. Brain floating centre, nothing else but the footer.
 
-- The brain at rest is the **solid logo** — one filled shape, no tile grid. See "The rest state is one shape" in section 3.
+- The brain at rest is the **four region colours**, whole and joined — purple, blue, red, yellow, tile grid visible, exactly as the reference artwork. Not the white logo: that is a beat in the load sequence and does not come back.
+- No wordmark. It leaves with the white logo and the colour state is regions and labels only.
+- No labels, no glow, no pulses. All four regions sit at full colour; nothing is picked out until the cursor arrives.
 - Idle motion: a slow breathing/drift, enough to read as alive and invite the cursor. Subtle — this is an invitation, not a performance.
 - No scroll. No nav. No headline.
 - **Footer:** one quiet line at the bottom of the viewport — contact, privacy policy, copyright. Small, low-contrast, permanent across all states.
@@ -134,16 +144,20 @@ The entire home page. Brain floating centre, nothing else but the footer.
 
 **Trigger:** cursor enters the brain's **bounding box** (not the tile silhouette). Forgiving by design.
 
+The brain is already coloured when the cursor arrives, so the hover breaks it open rather than changing what it is.
+
 On entry, simultaneously:
 
-1. Every tile flips from white to its region colour.
-2. The wordmark disappears — it does not persist or relocate. The colour state is regions and labels only.
-3. The four region clusters slide outward from centre along their own diagonals: purple up-left, blue up-right, red down-left, yellow down-right. **Distance: 0.5 to 1.0 tile width. No more.** Enough to open the seams; not enough to stop it reading as one brain.
-4. Detached floating pixels flip and travel with their assigned region.
+1. Every tile flips 180 degrees. The colour does not change — the flip is the break, a beat where the whole brain turns edge-on and comes back.
+2. The four region clusters slide outward from centre along their own diagonals: purple up-left, blue up-right, red down-left, yellow down-right. **Distance: 0.5 to 1.0 tile width. No more.** Enough to open the seams; not enough to stop it reading as one brain.
+3. Detached floating pixels flip and travel with their assigned region.
+4. The live region's label appears (section 8).
 
 **Flip duration:** ~250–350ms, eased.
 
-**Exit:** cursor leaves the bounding box → clusters close, tiles flip back to white, wordmark returns.
+**Exit:** cursor leaves the bounding box → clusters close, tiles flip home, labels go. It returns to the joined colour state, never to the white logo.
+
+**Click:** a click on any tile goes to that region's route. Detection is the same per-tile test the hover uses, so the clickable area is the region's real shape — clicking a notch between regions does nothing, exactly as it lights nothing. The four labels are ordinary links to the same routes.
 
 ---
 
@@ -191,5 +205,5 @@ Placement is unresolved — see open items. Whatever is chosen must survive four
 1. **Touch.** There is no hover on mobile. The entire interaction model depends on it. Needs a decision before this ships — not before it's built, but before it's public.
 2. **Label placement.** Floating near the live region, or fixed toward its corner outside the brain.
 3. **Confirmed hex values** from Canva.
-4. **The official logo as a file.** The tile map cannot host the wordmark at its real proportion (see section 3). Until the artwork is supplied, the rest state is a close reconstruction, not the official logo. With the file, the tile map and the wordmark placement can both be re-derived from it and every state becomes the real artwork.
-4. ~~Region cut lines~~ — **resolved.** Straight centre split: between columns 11 and 12, between rows 9 and 10. No tile falls on a line. Loose pixels are assigned automatically by coordinate. Tile counts: purple 73, blue 64, red 46, yellow 59.
+4. **The official logo as a file.** The tile map cannot host the wordmark at its real proportion (see section 3). Until the artwork is supplied, the logo beat is a close reconstruction rather than the official logo. With the file, the tile map and the wordmark placement can both be re-derived from it. Note that images pasted into a chat do not reach the repository — the file has to arrive as a file.
+5. ~~Region cut lines~~ — **resolved.** Straight centre split: between columns 11 and 12, between rows 9 and 10. No tile falls on a line. Loose pixels are assigned automatically by coordinate. Tile counts: purple 73, blue 64, red 46, yellow 59.

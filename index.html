@@ -18,8 +18,8 @@
     --yellow:#F5D046;   /* Playground   bottom-right */
 
     --heal:300ms;              /* grid seams dissolving into the solid logo */
+    --reveal:600ms;            /* the logo dissolving into the colour state */
     --flip:420ms;              /* full flip duration */
-    --mid:210ms;               /* midpoint: tiles edge-on, invisible */
     --spread:calc(var(--t)*0.75);   /* cluster slide distance */
 
     /* wordmark block, placed on the tile grid. Fitted so every letterform
@@ -103,33 +103,37 @@
   #solid{
     position:absolute; inset:0; pointer-events:none;
     opacity:0;
-    transition:opacity var(--heal) ease var(--flip);
+    transition:opacity var(--heal) ease;
   }
   #solid path{ fill:var(--white) }
-  #stage.ready #solid{ opacity:1 }
-  /* hovering hands the brain back to the tiles at once, so the grid is there
-     the instant the flip starts */
-  #stage.ready:is(:hover,.open) #solid{ opacity:0; transition:opacity 0ms }
+  #stage.assembled #solid{ opacity:1 }
+  /* one way only: the white logo belongs to the load sequence. Once it has
+     dissolved into the colour state it never returns. */
+  #stage.coloured #solid{ opacity:0; transition:opacity var(--reveal) ease }
 
-  /* tiles yield to the solid logo once it has covered them, and come back
-     instantly on hover. Never a fractional opacity mid-flip: that would make
-     a stacking context on .region and flatten preserve-3d underneath it. */
-  #stage.ready .region{
-    opacity:0;
-    transition:opacity 0ms calc(var(--flip) + var(--heal));
+  /* the tiles sit behind the solid logo while it holds, then take over as it
+     dissolves. Never a fractional opacity on .region during the flip: that
+     makes a stacking context and flattens preserve-3d underneath it. */
+  #stage.assembled .region{ opacity:0; transition:opacity 0ms var(--heal) }
+  #stage.assembled.coloured .region{ opacity:1; transition:opacity 0ms }
+
+  /* any input during the load sequence snaps straight to the rest state */
+  #stage.snap :is(#solid,#wordmark,.region,.tile){
+    transition:none !important; animation:none !important;
   }
-  #stage.ready:is(:hover,.open) .region{ opacity:1; transition:opacity 0ms }
+
+  /* ---- the colour state ----
+     Colour now arrives in the load sequence, not on hover, so the tiles are
+     already their region colour by the time anything flips. That retires the
+     midpoint colour swap: there is no longer a colour change to hide inside
+     the flip. Background changes instantly, unanimated. */
+  #stage.coloured .region .tile{ background:var(--c) }
 
   /* ---- SCREEN 3: the flip ---- */
-  /* transform runs the full duration; background-color swaps instantly at the
-     midpoint, when the tile is edge-on at 90deg and cannot be seen changing. */
   #stage.ready .tile.on{
-    transition:transform var(--flip) cubic-bezier(.22,.61,.36,1),
-               background-color 0ms var(--mid);
+    transition:transform var(--flip) cubic-bezier(.22,.61,.36,1);
   }
   #stage.ready:is(:hover,.open) .tile.on{ transform:rotateY(180deg); }
-
-  #stage.ready:is(:hover,.open) .region .tile{ background:var(--c) }
 
   /* clusters open outward on their own diagonals */
   #stage.ready:is(:hover,.open) .region--tl,
@@ -188,6 +192,9 @@
   #stage.ready:is(:hover,.open) .label--bl{ translate:calc(var(--spread)*-1) var(--spread) }
   #stage.ready:is(:hover,.open) .label--br{ translate:var(--spread)           var(--spread) }
   #stage.ready.live .label.is-live{ opacity:1 }
+  .label{ text-decoration:none }
+  /* a live region is a link target */
+  #stage.ready.live{ cursor:pointer }
   .label:focus-visible{ opacity:1; outline:1px solid currentColor; outline-offset:.4em }
 
   /* wordmark: black letterforms over the tiles. hidden at the flip midpoint.
@@ -203,10 +210,10 @@
     height:calc(var(--t) * var(--wm-cols) * 312 / 640);
     pointer-events:none;
     opacity:1;
-    transition:opacity 0ms var(--mid);
   }
   #wordmark svg{ display:block; width:100%; height:100% }
-  #stage.ready:is(:hover,.open) #wordmark{ opacity:0 }
+  /* the letterforms dissolve together with the white logo they are carved from */
+  #stage.coloured #wordmark{ opacity:0; transition:opacity var(--reveal) ease }
 
   footer{
     position:fixed; bottom:1.25rem; left:0; right:0;
@@ -257,10 +264,10 @@
     </div>
   </div>
   <div id="labels">
-    <button type="button" class="label label--tl" data-reg="tl">Experiences</button>
-    <button type="button" class="label label--tr" data-reg="tr">Coaching</button>
-    <button type="button" class="label label--bl" data-reg="bl">Backstory</button>
-    <button type="button" class="label label--br" data-reg="br">Playground</button>
+    <a class="label label--tl" data-reg="tl" href="/experiences">Experiences</a>
+    <a class="label label--tr" data-reg="tr" href="/coaching">Coaching</a>
+    <a class="label label--bl" data-reg="bl" href="/backstory">Backstory</a>
+    <a class="label label--br" data-reg="br" href="/playground">Playground</a>
   </div>
 </div>
 
@@ -324,22 +331,48 @@ for(const [c,r,reg] of TILES){
   cells.set(K(c,r), {el:d, reg, c, r});
 }
 
-/* ---------- intro assembly (screen 1) ---------- */
+/* ---------- screen 1: preloader -> logo -> colour ----------
+   Three beats. Tiles assemble as the preloader, the assembled logo holds,
+   then it dissolves to reveal the colour state, which is the home page.
+
+   The wave is a floor, not the whole gate: the sequence will not advance
+   until the tiles have landed AND the page's assets have decoded. With no
+   external artwork that is just the wave, but drop the official logo in as
+   an <img> and it is genuinely waited on rather than raced. */
 const maxDist=Math.max(...els.map(t=>t.dist));
-const SPREAD=1500, HOLD=700;
+const SPREAD=1500, HOLD=500, LOGO_HOLD=700;
+const REVEAL=parseFloat(getComputedStyle(document.documentElement)
+  .getPropertyValue('--reveal'))||700;
 let done=false; const timers=[];
 
-function finish(){
-  if(done) return; done=true;
-  timers.forEach(clearTimeout);
+const assetsReady=Promise.all([
+  ...[...document.images].map(i=>i.decode().catch(()=>{})),
+  document.fonts ? document.fonts.ready.catch(()=>{}) : null
+]);
+
+function showLogo(){                 // beat 2: the assembled logo
   els.forEach(t=>{ t.el.classList.remove('seed'); t.el.classList.add('on'); });
+  stage.classList.add('assembled');
   brain.classList.add('alive');
-  // hover only becomes live once the brain has finished assembling
-  requestAnimationFrame(()=>stage.classList.add('ready'));
+}
+
+function toColour(){                 // beat 3: dissolve into the region colours
+  stage.classList.add('coloured');
+  // hover is inert until the reveal has finished
+  timers.push(setTimeout(()=>stage.classList.add('ready'), REVEAL));
+}
+
+function skip(){                     // any input: straight to the rest state
+  if(done) return; done=true;
+  timers.forEach(clearTimeout); timers.length=0;
+  stage.classList.add('snap');
+  showLogo();
+  stage.classList.add('coloured','ready');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>stage.classList.remove('snap')));
 }
 
 function run(){
-  if(reduce){ finish(); return; }
+  if(reduce){ skip(); return; }
   const s=els.find(t=>t.isSeed);
   s.el.classList.add('seed');
   timers.push(setTimeout(()=>{
@@ -348,12 +381,17 @@ function run(){
       if(t.isSeed) continue;
       timers.push(setTimeout(()=>t.el.classList.add('on'), (t.dist/maxDist)*SPREAD));
     }
-    timers.push(setTimeout(finish, SPREAD+250));
+    const wave=new Promise(r=>timers.push(setTimeout(r, SPREAD+250)));
+    Promise.all([wave, assetsReady]).then(()=>{
+      if(done) return; done=true;
+      showLogo();
+      timers.push(setTimeout(toColour, LOGO_HOLD));
+    });
   }, HOLD));
 }
 
 ['click','keydown','touchstart'].forEach(ev=>
-  addEventListener(ev, finish, {once:true, passive:true}));
+  addEventListener(ev, skip, {once:true, passive:true}));
 
 run();
 
@@ -370,7 +408,7 @@ function hitTest(clientX, clientY){
   const r=brain.getBoundingClientRect();
   if(!r.width) return null;
   const t=r.width/COLS;                       // tile size as drawn, breathing included
-  const sp=t*0.75;                            // --spread, same units
+  const sp=isOpen ? t*0.75 : 0;               // --spread, and only once open
   const x=clientX-r.left, y=clientY-r.top;
   for(const reg of REGS){
     const [sx,sy]=SIGN[reg];
@@ -516,10 +554,21 @@ stage.addEventListener('pointermove', e=>{
 stage.addEventListener('pointerenter', e=>{ px=e.clientX; py=e.clientY; open(); });
 stage.addEventListener('pointerleave', close);
 
+/* each region is its own link. Detection is the same per-tile test the hover
+   uses, so the clickable area is the region's real shape - clicking a notch
+   between the regions does nothing, exactly as it lights nothing. */
+const ROUTES={tl:'/experiences', tr:'/coaching', bl:'/backstory', br:'/playground'};
+stage.addEventListener('click', e=>{
+  if(!stage.classList.contains('ready')) return;
+  if(e.target.closest('.label')) return;     // the labels are already links
+  const reg=hitTest(e.clientX, e.clientY);
+  if(reg) location.href=ROUTES[reg];
+});
+
 /* keyboard: the four regions are tabbable and light their own region */
 for(const k of REGS){
   labels[k].addEventListener('focus', ()=>{
-    if(!done) finish();
+    if(!done) skip();
     isOpen=true; stage.classList.add('open');
     stage.classList.remove('neutral');
     apply(k);
