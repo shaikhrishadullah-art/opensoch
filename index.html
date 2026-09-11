@@ -19,6 +19,7 @@
 
     --heal:300ms;              /* grid seams dissolving into the solid logo */
     --reveal:600ms;            /* the logo dissolving into the colour state */
+    --dive:620ms;              /* falling into a region on click */
     --flip:420ms;              /* full flip duration */
     --spread:calc(var(--t)*0.75);   /* cluster slide distance */
 
@@ -151,7 +152,8 @@
   /* live: one region at full colour, the other three pushed back */
   #stage.ready.live .region{ --veil:var(--veil-dim) }
   #stage.ready.live .region.is-live{ --veil:0 }
-  #stage.ready:is(:hover,.open) .region .tile::before{ opacity:var(--veil,0) }
+  #stage.ready:is(:hover,.open,.diving) .region .tile::before{ opacity:var(--veil,0) }
+  #stage.diving .region:not(.is-live){ --veil:1 }
 
   /* outer bloom for the live region. lives outside the 3D subtrees so its
      blur/blend cannot flatten preserve-3d on the tiles. */
@@ -166,6 +168,34 @@
   }
   #stage.ready.live .glowreg.is-live{ opacity:.6 }
   .gcell{ position:absolute; width:var(--t); height:var(--t); background:var(--c) }
+
+  /* ---- diving into a region ----
+     A click falls into the chosen quadrant. The stage scales up hard from the
+     clicked tile while the other three regions go to black, so the last thing
+     on screen is that one colour filling the viewport - and the section page
+     opens back out of the same colour. The grid is still the grid the whole
+     way in; it is the preloader's material, just enormous.
+
+     The three that leave use the veil they already dim with, not opacity on
+     .region: a fractional opacity there would flatten preserve-3d mid-dive. */
+  #stage.diving{
+    transform:scale(18);
+    transition:transform var(--dive) cubic-bezier(.55,0,.85,.35);
+    pointer-events:none;
+  }
+  #stage.diving #labels{ opacity:0; transition:opacity 180ms ease }
+
+  #curtain{
+    position:fixed; inset:0; z-index:5; pointer-events:none;
+    opacity:0; background:var(--c,var(--black));
+  }
+  .c-tl{ --c:var(--purple) } .c-tr{ --c:var(--blue) }
+  .c-bl{ --c:var(--red) }    .c-br{ --c:var(--yellow) }
+  /* covers just as the zoom tops out, so the cut to the next page is inside
+     a flat field of colour and never visible */
+  #curtain.closing{ opacity:1; transition:opacity 260ms ease-in calc(var(--dive) - 280ms) }
+  /* arriving home from a section: the same colour recedes into the brain */
+  #curtain.opening{ opacity:0; transition:opacity 520ms ease-out }
 
   /* ---- labels: hover-only, anchored to the region's outer corner ---- */
   #labels{ position:absolute; inset:0; pointer-events:none }
@@ -271,6 +301,8 @@
   </div>
 </div>
 
+<div id="curtain"></div>
+
 <footer><a href="#">Contact</a><a href="#">Privacy</a><span>&copy; 2026 Opensoch</span></footer>
 
 <script>
@@ -330,6 +362,12 @@ for(const [c,r,reg] of TILES){
 
   cells.set(K(c,r), {el:d, reg, c, r});
 }
+
+/* where each region goes, and the colour field the navigation happens inside */
+const ROUTES={tl:'/experiences', tr:'/coaching', bl:'/backstory', br:'/playground'};
+const curtain=document.getElementById('curtain');
+const DIVE=parseFloat(getComputedStyle(document.documentElement)
+  .getPropertyValue('--dive'))||620;
 
 /* ---------- screen 1: preloader -> logo -> colour ----------
    Three beats. Tiles assemble as the preloader, the assembled logo holds,
@@ -393,7 +431,23 @@ function run(){
 ['click','keydown','touchstart'].forEach(ev=>
   addEventListener(ev, skip, {once:true, passive:true}));
 
-run();
+/* Arriving from a section - the nav logo carries ?from=<region>. Home opens
+   on the closed colour state rather than replaying the load sequence, and
+   that region's colour recedes to reveal the brain already assembled. A
+   direct visit to / still gets the full sequence. */
+const from=new URLSearchParams(location.search).get('from');
+if(from && ROUTES[from]){
+  curtain.className='c-'+from;
+  curtain.style.opacity='1';
+  skip();
+  requestAnimationFrame(()=>{
+    curtain.style.opacity='';
+    curtain.classList.add('opening');
+  });
+  history.replaceState(null,'','/');         // so a refresh replays the full sequence
+}else{
+  run();
+}
 
 /* ---------- screen 4: per-tile region detection ---------- */
 /* Each cluster is translated outward on its own diagonal, so a screen point
@@ -508,7 +562,7 @@ function startPulses(reg){
 }
 
 /* ---------- state ---------- */
-let live=null, isOpen=false, px=0, py=0, raf=null;
+let live=null, isOpen=false, px=0, py=0, raf=null, diving=false;
 
 function apply(reg){
   if(reg===live) return;
@@ -540,6 +594,7 @@ function open(){
 }
 
 function close(){
+  if(diving) return;        // the dive owns the state from here on
   if(!isOpen) return;
   isOpen=false;
   cancelAnimationFrame(raf); raf=null;
@@ -557,12 +612,39 @@ stage.addEventListener('pointerleave', close);
 /* each region is its own link. Detection is the same per-tile test the hover
    uses, so the clickable area is the region's real shape - clicking a notch
    between the regions does nothing, exactly as it lights nothing. */
-const ROUTES={tl:'/experiences', tr:'/coaching', bl:'/backstory', br:'/playground'};
+/* Fall into a region: scale the stage up from the clicked tile, drop the
+   other three behind the veil, and let the colour close over the top. The
+   section page is only loaded once the screen is a flat field of that
+   colour, so the document swap is never seen. */
+function dive(reg, cx, cy){
+  if(diving) return; diving=true;
+  // freeze the live region where it is: the zoom invalidates the hit test and
+  // pointer-events:none would otherwise drop :hover and close the whole state
+  if(raf) cancelAnimationFrame(raf);
+  raf=null;
+  stopPulses();
+  const r=stage.getBoundingClientRect();
+  stage.style.transformOrigin =
+    `${((cx-r.left)/r.width*100).toFixed(2)}% ${((cy-r.top)/r.height*100).toFixed(2)}%`;
+  curtain.className='c-'+reg;
+  requestAnimationFrame(()=>{
+    stage.classList.add('diving');
+    curtain.classList.add('closing');
+  });
+  // hand the entry point on, so the section opens where the click landed
+  const qx=(cx/innerWidth).toFixed(3), qy=(cy/innerHeight).toFixed(3);
+  setTimeout(()=>{
+    location.href=`${ROUTES[reg]}?from=${reg}&x=${qx}&y=${qy}`;
+  }, DIVE);
+}
+
 stage.addEventListener('click', e=>{
   if(!stage.classList.contains('ready')) return;
-  if(e.target.closest('.label')) return;     // the labels are already links
-  const reg=hitTest(e.clientX, e.clientY);
-  if(reg) location.href=ROUTES[reg];
+  const viaLabel=e.target.closest('.label');
+  const reg = viaLabel ? viaLabel.dataset.reg : hitTest(e.clientX, e.clientY);
+  if(!reg) return;
+  e.preventDefault();                        // the dive does the navigating
+  dive(reg, e.clientX, e.clientY);
 });
 
 /* keyboard: the four regions are tabbable and light their own region */

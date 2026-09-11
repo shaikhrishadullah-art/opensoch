@@ -20,7 +20,10 @@ then `http://localhost:8000`. It will open from `file://` too, but serve it if y
 
 | File | |
 |---|---|
-| `index.html` | The whole site. One file. |
+| `index.html` | The brain: load sequence, colour rest state, hover, dive. One file. |
+| `experiences/` `coaching/` `backstory/` `playground/` | Section pages. **Shells** — nav and transition wiring only; `<main>` awaits the Claude Design artboard. |
+| `assets/brand.css` | The palette. The only place the four hexes should appear. |
+| `assets/transition.css` `assets/transition.js` | The arrival transition and the way back to the brain. Design-agnostic; styles nothing about the page. |
 | `CLAUDE.md` | The spec. Authoritative. |
 | `tilemap.json` | Canonical tile data: 23×19 grid, 242 filled tiles, each tagged `tl`/`tr`/`bl`/`br`. |
 | `wordmark.png` | **Reference only — nothing loads it.** Kept because the letterform metrics were measured off it. It is a faulty export containing five of the eight glyphs. |
@@ -37,17 +40,31 @@ Screens 1–4 of the spec, all on the home page:
 3. **Hover** — every tile flips 180°, the four clusters slide apart on their diagonals, the label appears. Colour does not change; it is already there.
 4. **Region states** — per-tile region detection, live region glows with neuron pulses, other three dim. Neutral state when the cursor is inside the box but not on a tile.
 
-Clicking any tile goes to that region's route. Keyboard works: the four labels are tabbable links that light their own region.
+Clicking any tile dives into that region — the stage scales up out of the clicked tile, the other three go black, and the section opens back out of the same colour, breaking into big tiles that clear from the point that was clicked. The nav logo returns to the closed colour brain without replaying the load sequence.
+
+Keyboard works: the four labels are tabbable links that light their own region.
 
 ## What is not built
 
-- **The four detail pages.** The regions and labels link to `/experiences`, `/coaching`, `/backstory` and `/playground`; nothing serves those paths yet.
+- **The section content.** The four routes resolve to shells. Their `<main>` is a placeholder; the real content is in the Claude Design artboards, which have to be exported and committed — that surface is not reachable from a Claude Code session.
+- **Playground as a blog.** It is a single shell like the rest; post URLs beneath it do not exist yet.
 - **Touch.** There is no hover on mobile and the whole interaction model depends on it. This is open item 1 in the spec and it needs a decision before launch.
 - **The glitch transition.** The grid currently appears and disappears on a clean cut. The brief allows it to fade in glitchily between hovers; that was left until the logo itself is settled.
 
-## Routes
+## Adding a real page
 
-`ROUTES` in the script maps each region to its path, and the four labels carry the same paths as `href`s. Clicking a tile navigates; clicking a notch between regions does nothing, because detection is the same per-tile test the hover uses.
+Drop the artboard's markup into the shell's `<main>` and keep three things on the page:
+
+```html
+<body data-region="tl">                                   <!-- tl|tr|bl|br -->
+<link rel="stylesheet" href="/assets/transition.css">
+<script src="/assets/transition.js" defer></script>
+<a href="/" data-home>…</a>            <!-- the nav logo, or any link home -->
+```
+
+`data-region` sets the colour the page arrives out of. `data-home` rewrites that link to `/?from=<region>` so the brain skips its load sequence coming back. Everything else — nav, type, layout — is the artboard's business; the transition layer paints over the page and gets out of the way, so it will not collide with it.
+
+`ROUTES` in `index.html` maps each region to its path. Clicking a tile dives; clicking a notch between regions does nothing, because detection is the same per-tile test the hover uses.
 
 ## The open blocker: the official logo
 

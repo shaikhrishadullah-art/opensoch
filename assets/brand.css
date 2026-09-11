@@ -1,0 +1,16 @@
+/* Opensoch brand tokens — the single source for the palette.
+   The four region hexes are still eyedropper guesses; confirm against Canva.
+   Nothing anywhere should hardcode a colour, here or in index.html. */
+:root{
+  --black:#000; --white:#fff;
+  --purple:#7B2382;   /* Experiences */
+  --blue:#0B63C5;     /* Coaching    */
+  --red:#D42A18;      /* Backstory   */
+  --yellow:#F5D046;   /* Playground  */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--black); color:var(--white);
+  font-family:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}

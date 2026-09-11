@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Backstory — Opensoch</title>
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="/assets/transition.css">
+<style>
+  :root{ --accent:var(--red) }
+  /* --- stand-in chrome. The real navigation comes from the Claude Design
+     artboards; this exists so the loop from the brain and back is walkable
+     and so the arrival transition can be seen working. --- */
+  header{display:flex;align-items:center;gap:2.5rem;padding:1.4rem 2rem;
+    border-bottom:1px solid #1c1c1c;position:sticky;top:0;background:var(--black);z-index:20}
+  .mark{display:block;width:104px;flex:none}
+  .mark svg{display:block;width:100%;height:auto}
+  .mark svg [stroke]{stroke:var(--white)}
+  nav{display:flex;gap:1.6rem;margin-left:auto;
+    font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+  nav a{color:#8a8a8a;text-decoration:none}
+  nav a:hover,nav a:focus-visible{color:var(--white)}
+  nav a[aria-current]{color:var(--accent)}
+  main{max-width:62rem;margin:0 auto;padding:5rem 2rem 8rem}
+  h1{font-size:clamp(2.4rem,7vw,4.6rem);letter-spacing:-.02em;line-height:.98;
+    text-wrap:balance;color:var(--accent)}
+  .lede{margin-top:1.6rem;max-width:36rem;font-size:1.05rem;line-height:1.6;color:#c9c9c9}
+  .slot{margin-top:4rem;padding:2.5rem;border:1px dashed #2e2e2e;border-radius:2px;
+    color:#6f6f6f;font-size:.9rem;line-height:1.7}
+  .slot b{color:#9a9a9a;font-weight:600}
+</style>
+</head>
+<body data-region="bl">
+
+<header>
+  <a class="mark" href="/" data-home aria-label="Opensoch — back to the brain">
+    <svg viewBox="114 182 660 332" role="img">
+        <title>OPEN SOCH</title>
+        <g fill="none" stroke="var(--black)" stroke-width="26" stroke-linejoin="round"><g fill="none" stroke="#000" stroke-width="26" stroke-linejoin="round">
+        <g transform="translate(124,192)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
+        <g transform="translate(294,192)"><path d="M13,117L13,26A13,13 0 0 1 26,13L104,13A13,13 0 0 1 117,26L117,52A13,13 0 0 1 104,65L13,65"/></g>
+        <g transform="translate(464,192)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117M13,65L117,65"/></g>
+        <g transform="translate(634,192)"><path d="M13,117L13,26A13,13 0 0 1 22.19,22.19L107.81,107.81A13,13 0 0 0 117,104L117,13"/></g>
+        <g transform="translate(124,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,52A13,13 0 0 0 26,65L104,65A13,13 0 0 1 117,78L117,104A13,13 0 0 1 104,117L13,117"/></g>
+        <g transform="translate(294,374)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
+        <g transform="translate(464,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117"/></g>
+        <g transform="translate(634,374)"><path d="M13,13L13,117M117,13L117,117M13,65L117,65"/></g>
+      </g>
+      </svg>
+  </a>
+  <nav>
+      <a href="/experiences">Experiences</a>
+      <a href="/coaching">Coaching</a>
+      <a href="/backstory" aria-current="page">Backstory</a>
+      <a href="/playground">Playground</a>
+  </nav>
+</header>
+
+<main>
+  <h1>Backstory</h1>
+  <p class="lede">Placeholder. This page exists so the brain has somewhere to land.</p>
+  <div class="slot">
+    <b>Awaiting the Claude Design artboard.</b><br>
+    Replace everything inside <code>&lt;main&gt;</code> with <code>OpenSoch-Backstory.dc.html</code>.
+    Keep <code>data-region="bl"</code> on <code>&lt;body&gt;</code> and the
+    <code>data-home</code> attribute on the logo — those two are what wire this page
+    to the brain's dive-in and the way back.
+  </div>
+</main>
+
+<script src="/assets/transition.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* Arrival transition, shared by every section page.
+   Design-agnostic: it paints over whatever the page is and gets out of the
+   way. Nothing here styles the page itself. */
+#arrival{
+  position:fixed; inset:0; z-index:90; pointer-events:none;
+  contain:strict;
+}
+#arrival i{
+  position:absolute; display:block;
+  background:var(--arrive);
+  will-change:opacity, transform;
+  transition:opacity 300ms ease, transform 300ms ease;
+}
+#arrival.go i{ opacity:0; transform:scale(.25) }
+
+@media (prefers-reduced-motion:reduce){
+  #arrival{ display:none }
+}

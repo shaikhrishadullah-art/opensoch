@@ -18,9 +18,9 @@ Plus **Backstory**, the company's own history.
 
 ## 2. Scope
 
-**In scope:** the home page only — screens 1 through 4 below.
+**In scope:** the home page — screens 1 through 4 below — plus the seam that joins it to the rest of the site: the dive out of a region, the arrival on a section page, and the way back to the brain (section 11).
 
-**Out of scope:** all four detail pages. The four regions are wired as links and resolve to placeholder routes (`/experiences`, `/coaching`, `/backstory`, `/playground`); the pages behind them are not built.
+**Out of scope:** the content and design of the four section pages. Those come from the Claude Design artboards. What exists at `/experiences`, `/coaching`, `/backstory` and `/playground` today are **thin shells** that carry the navigation and the transition wiring so the loop is walkable; their `<main>` is a placeholder waiting for the artboard.
 
 **Explicit non-goals:** SEO, meta tags, structured data, analytics, marketing conventions. The home page is deliberately unconventional and content-light. Do not add hero copy, a nav bar, scroll sections, or a cookie banner. Do not propose changes on these grounds.
 
@@ -121,6 +121,8 @@ This is a real preloader, not a fixed-length animation. The sequence advances on
 
 **Timing:** roughly 3.5s end to end; the constants are `HOLD`, `SPREAD`, `LOGO_HOLD` in the script and `--reveal` in `:root`.
 
+**Returning from a section** is not a fresh visit: the navigation logo carries `?from=<region>`, and home then opens directly on the closed colour state with that region's colour receding, rather than replaying the load sequence. A direct visit to `/` still gets all three beats.
+
 **Skip:** any click, tap, or key press snaps immediately to the colour state — past the logo, not to it. This matters — the team will load this site many times a day and the sequence must never become a toll.
 
 **Lock:** the brain is inert throughout. Hover does nothing until the reveal has finished or the sequence is skipped.
@@ -157,7 +159,7 @@ On entry, simultaneously:
 
 **Exit:** cursor leaves the bounding box → clusters close, tiles flip home, labels go. It returns to the joined colour state, never to the white logo.
 
-**Click:** a click on any tile goes to that region's route. Detection is the same per-tile test the hover uses, so the clickable area is the region's real shape — clicking a notch between regions does nothing, exactly as it lights nothing. The four labels are ordinary links to the same routes.
+**Click:** a click on any tile dives into that region (section 11). Detection is the same per-tile test the hover uses, so the clickable area is the region's real shape — clicking a notch between regions does nothing, exactly as it lights nothing. The four labels trigger the same dive.
 
 ---
 
@@ -200,10 +202,59 @@ Placement is unresolved — see open items. Whatever is chosen must survive four
 
 ---
 
+## 11. The site beyond the brain
+
+The brain is the front door. Everything behind it is an ordinary site with its own navigation, and the two are joined by one transition made of the same material as the preloader.
+
+### Structure
+
+| URL | | |
+|---|---|---|
+| `/` | the brain | load sequence, colour rest state, hover, dive |
+| `/experiences` | Experiences | purple, top-left |
+| `/coaching` | Coaching | blue, top-right |
+| `/backstory` | Backstory | red, bottom-left |
+| `/playground` | Playground | yellow, bottom-right — a blog, so it grows post URLs beneath it |
+
+Each section is a single page with its own URL and the site's own navigation. Once someone is inside, they navigate by that nav, not by the brain. The nav's logo is the only way back to the brain, and it returns to the closed colour state.
+
+### Diving in
+
+A click falls into the chosen quadrant rather than cutting to the next page:
+
+1. The live region is frozen — the hit test is invalidated by what follows, and `pointer-events:none` would otherwise drop `:hover` and tear the state down mid-transition.
+2. The stage scales up hard (18x, accelerating) with its transform origin on the **tile that was clicked**, so the grid grows out of that exact point.
+3. The other three regions go to black using the veil they already dim with — not `opacity` on `.region`, which would flatten `preserve-3d`.
+4. A full-screen field of the region's colour closes over the top just as the zoom tops out, so the document swap happens inside flat colour and is never seen.
+
+The click point travels with the navigation as `?from=<region>&x=&y=` (x and y normalised to the viewport).
+
+### Arriving
+
+`assets/transition.js` picks the thread up. The section opens out of the same flat colour, which breaks into a coarse grid of large tiles that clear outward from the exact point the user clicked. Same material as the preloader, so the two halves read as one thing.
+
+### The drop-in contract
+
+Any page — including the real artboards when they land — joins the site by declaring three things and nothing else:
+
+```html
+<body data-region="tl">                                   <!-- tl|tr|bl|br -->
+<link rel="stylesheet" href="/assets/transition.css">
+<script src="/assets/transition.js" defer></script>
+<a href="/" data-home>…</a>            <!-- any link back to the brain -->
+```
+
+`data-region` sets the colour the page arrives out of. `data-home` rewrites that link to `/?from=<region>` so the brain skips its load sequence on the way back. `assets/brand.css` holds the palette and should be the only place the four hexes appear.
+
+The transition layer styles nothing about the page itself. It paints over whatever is there and gets out of the way, so it cannot collide with the artboards' own design.
+
+---
+
 ## 10. Open items
 
 1. **Touch.** There is no hover on mobile. The entire interaction model depends on it. Needs a decision before this ships — not before it's built, but before it's public.
 2. **Label placement.** Floating near the live region, or fixed toward its corner outside the brain.
 3. **Confirmed hex values** from Canva.
 4. **The official logo as a file.** The tile map cannot host the wordmark at its real proportion (see section 3). Until the artwork is supplied, the logo beat is a close reconstruction rather than the official logo. With the file, the tile map and the wordmark placement can both be re-derived from it. Note that images pasted into a chat do not reach the repository — the file has to arrive as a file.
-5. ~~Region cut lines~~ — **resolved.** Straight centre split: between columns 11 and 12, between rows 9 and 10. No tile falls on a line. Loose pixels are assigned automatically by coordinate. Tile counts: purple 73, blue 64, red 46, yellow 59.
+5. **The section designs.** The four artboards live in Claude Design (`OpenSoch-Experiences.dc.html` and siblings). That surface is not reachable from a Claude Code session — the canvas URL 403s and its id is not an artifact — so the files have to be exported and committed. Until then the section pages are shells.
+6. ~~Region cut lines~~ — **resolved.** Straight centre split: between columns 11 and 12, between rows 9 and 10. No tile falls on a line. Loose pixels are assigned automatically by coordinate. Tile counts: purple 73, blue 64, red 46, yellow 59.
