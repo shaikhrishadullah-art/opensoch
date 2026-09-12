@@ -68,13 +68,15 @@ Drop the artboard's markup into the shell's `<main>` and keep three things on th
 
 `ROUTES` in `index.html` maps each region to its path. Clicking a tile dives; clicking a notch between regions does nothing, because detection is the same per-tile test the hover uses.
 
-## Read this before launch: the pages need a CDN to render
+## Resolved: the runtime is served locally
 
-`vendor/support.js` fetches **React 18, ReactDOM 18 and Babel standalone from `unpkg.com` at runtime**, then transpiles each page's script in the browser on every view. Roughly 3MB of third-party JavaScript before anything paints, and the four section pages render **blank** if unpkg is unreachable.
+`vendor/support.js` asks unpkg for React 18, ReactDOM 18 and Babel standalone at runtime — ~3MB of third-party JavaScript in front of every section page, and blank pages whenever unpkg was unreachable.
 
-The brain is the opposite — one file, no dependencies, no network. So the site currently has two very different reliability profiles either side of one click.
+`assets/local-runtime.js` loads immediately before `support.js` and redirects all three to `vendor/lib/` via `window.__resources`, the hook `support.js` already consults. **`support.js` is unedited.** The libraries came from the npm registry and are byte-identical to the unpkg copies — their sha384 digests match the SRI constants `support.js` pins.
 
-Before this goes public, either vendor those three libraries locally and point `support.js` at them, or precompile each page's `data-dc-script` so Babel is not needed in the browser at all. This was not done here because egress to unpkg and cdnjs is blocked in the build sandbox, so the libraries could not be downloaded — and it is a decision about the production setup, not a wiring detail.
+A section page's only remaining external request is Google Fonts for Archivo.
+
+Still worth doing: Babel is 3.1MB and compiles each page's script on every view. Precompiling the `data-dc-script` blocks at build time would remove Babel from the browser altogether.
 
 ## Resolved: the official logo
 

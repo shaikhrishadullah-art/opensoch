@@ -270,7 +270,17 @@ Any page — including the real artboards when they land — joins the site by d
 /assets/transition.*                       arrival transition and the way home
 /assets/img/                               artwork from the design handoff
 /vendor/                                   support.js, image-slot.js, _ds/ - do not edit
+/vendor/lib/                               React, ReactDOM, Babel - served locally
+/assets/local-runtime.js                   points support.js at vendor/lib
 ```
+
+### The runtime is served from this origin
+
+`vendor/support.js` asks unpkg for React 18, ReactDOM 18 and Babel standalone at runtime. That put ~3MB of third-party JavaScript in front of every section page and rendered them blank whenever unpkg was unreachable.
+
+`assets/local-runtime.js`, loaded immediately before `support.js`, redirects all three to `vendor/lib/` through `window.__resources` — the hook `support.js` already consults in `cdnScriptFor`. **`support.js` itself is unedited**, as the handoff asks.
+
+The three files came from the npm registry and are byte-identical to the unpkg copies: their sha384 digests match the SRI constants `support.js` pins, which is how that was confirmed. The only external request a section page now makes is Google Fonts for Archivo.
 
 The artboards were transformed, not rewritten: runtime and design-system paths made absolute, `OpenSoch-*.dc.html` links turned into clean routes, the header mark pointed at `/` with `data-home`, and `data-region`, `<title>`, palette and transition added. Their markup, copy and styling are untouched.
 
@@ -283,7 +293,7 @@ The transition layer styles nothing about the page itself. It paints over whatev
 1. **Touch.** There is no hover on mobile. The entire interaction model depends on it. Needs a decision before this ships — not before it's built, but before it's public.
 2. **Label placement.** Floating near the live region, or fixed toward its corner outside the brain.
 3. **The 17 missing tiles.** Measured, listed in section 3, not applied. Applying them and re-fitting should finally put the wordmark at its official proportion.
-4. **The section pages depend on a third-party CDN at runtime.** `vendor/support.js` fetches React 18, ReactDOM 18 and Babel standalone from `unpkg.com` on every page view, then transpiles each page's script in the browser. That is roughly 3MB of third-party JavaScript before anything renders, and the four pages are blank if unpkg is unreachable — which is how they behave in this sandbox, where egress to unpkg and cdnjs is blocked. The brain, by contrast, is one file with no dependencies. Before this is public the runtime should be vendored locally or the pages precompiled.
+4. **Babel still transpiles in the browser.** The runtime is local now (see below), but `vendor/lib/babel.min.js` is 3.1MB and each section page's `data-dc-script` is compiled on every view. Precompiling those scripts at build time would drop Babel from the page entirely. A speed matter now, not a reliability one.
 5. ~~Confirmed hex values~~ — **resolved.** Locked palette supplied with the design handoff; see section 4.
 6. ~~The official logo as a file~~ — **resolved.** Arrived as `assets/img/opensoch-pixel-logo.png` with the design handoff.
 7. ~~The section designs~~ — **resolved.** Exported from Claude Design and built into the four routes.
