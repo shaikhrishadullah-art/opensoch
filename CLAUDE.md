@@ -20,7 +20,9 @@ Plus **Backstory**, the company's own history.
 
 **In scope:** the home page — screens 1 through 4 below — plus the seam that joins it to the rest of the site: the dive out of a region, the arrival on a section page, and the way back to the brain (section 11).
 
-**Out of scope:** the content and design of the four section pages. Those come from the Claude Design artboards. What exists at `/experiences`, `/coaching`, `/backstory` and `/playground` today are **thin shells** that carry the navigation and the transition wiring so the loop is walkable; their `<main>` is a placeholder waiting for the artboard.
+**Also in scope now:** the four section pages, built from the Claude Design artboards and served at `/experiences`, `/coaching`, `/backstory` and `/playground`.
+
+**Out of scope:** their content and design, which is the artboards' business and is marked final. Do not rewrite the copy on Experiences, Coaching or Backstory.
 
 **Explicit non-goals:** SEO, meta tags, structured data, analytics, marketing conventions. The home page is deliberately unconventional and content-light. Do not add hero copy, a nav bar, scroll sections, or a cookie banner. Do not propose changes on these grounds.
 
@@ -51,7 +53,18 @@ The overlay used to be `wordmark.png`. That export was faulty — it contained o
 
 **Placement** is set on the tile grid by `--wm-cols` / `--wm-left` / `--wm-top` (block width and origin, in tiles), not by stretching an image to the brain's bounding box. The values are fitted so every letterform pixel lands on a filled tile: a black letter over a gap in the silhouette is invisible. Currently **12 / 6.75 / 6.75**, measured at zero ink off the silhouette. Re-fit if the tile map changes.
 
-**Unresolved — the wordmark does not fit at its real proportion.** Measured off the official logo, the block is about **16.5 tiles wide at left ~3.15, top ~4.85**, and the letters there are fully carved. On this tile map they are not: past ~13 tiles the `N` and the `H` run off the silhouette, and at 16.5 no placement anywhere on the grid gets above ~93% of the ink onto tiles. So the tile map and the official artwork disagree — the silhouette here is narrower through the `OPEN` band than the real one. The 12-tile setting is a holding value that keeps every letter intact; it is **not** the official proportion. Resolving this needs the official logo as a file, so the tile map and the wordmark placement can both be re-derived from it rather than estimated.
+**Measured — the tile map is 17 tiles short.** The official artwork arrived with the design handoff as `assets/img/opensoch-pixel-logo.png` (2293x1912, which is the 23x19 grid at ~100px a tile; the surround is transparent, so the silhouette is simply the opaque pixels). Sampling it against `tilemap.json`:
+
+- the logo has **259** tiles, our map has **242** — 93.4% agreement
+- **0** tiles in our map are absent from the logo, so nothing here is wrong
+- **17** tiles in the logo are missing from our map, all on the two flanks of the `OPEN` band:
+
+```
+left   3,5  3,6  3,7  3,10  4,5  4,11  4,12  5,5  5,11  5,12  6,12
+right  17,5 17,6 18,6 19,5  19,6 19,7
+```
+
+That is exactly the gap that stopped the wordmark sitting at its real ~16.5-tile proportion: the silhouette was too narrow on both sides of `OPEN`, so the `N` and the `S` ran off it. Adding those 17 tiles (regions assigned by coordinate as usual) and re-running `tools/fit-wordmark.mjs` should let the wordmark go to full size. **Not yet applied** — it changes the artwork and wants reviewing on its own.
 
 Two consequences, both desirable:
 
@@ -92,16 +105,18 @@ Colour now arrives in the load sequence rather than on hover, so by the time any
 | Backstory | Red | Bottom-left | `/backstory` |
 | Playground | Yellow | Bottom-right | `/playground` |
 
-Placeholder hex values sampled from the reference artwork — **confirm against Canva before build:**
+**Confirmed** from the Claude Design handoff, whose brand constraints are locked. These replaced the earlier eyedropper guesses and live in `assets/palette.css`, which the brain and every section page link. Nothing else should declare a colour.
 
 ```
---purple:  #7B2382
---blue:    #0B63C5
---red:     #D42A18
---yellow:  #F5D046
---white:   #FFFFFF
+--purple:  #81007b
+--blue:    #0055bf
+--red:     #c91a09
+--yellow:  #f2cd37
+--white:   #ffffff
 --black:   #000000
 ```
+
+Note the section pages use `#c91a09` as their shared UI accent regardless of which region you arrived from. The four colours are the brain's language; inside the site they are decorative. That is the design's call, not a mismatch.
 
 Note: "Backstory" replaces "Our Story" everywhere — nav label, route, page title, and the existing drafted page copy.
 
@@ -244,7 +259,20 @@ Any page — including the real artboards when they land — joins the site by d
 <a href="/" data-home>…</a>            <!-- any link back to the brain -->
 ```
 
-`data-region` sets the colour the page arrives out of. `data-home` rewrites that link to `/?from=<region>` so the brain skips its load sequence on the way back. `assets/brand.css` holds the palette and should be the only place the four hexes appear.
+`data-region` sets the colour the page arrives out of. `data-home` is handled by delegation as well as by rewriting the href — the section pages are rendered at runtime, so the nav does not exist when the script first runs. `assets/palette.css` holds the colours and should be the only place the four hexes appear; it is tokens only, with no reset, so it cannot collide with the artboards' own design system.
+
+### Where things live
+
+```
+/                      index.html          the brain, self-contained, no dependencies
+/experiences  …        <slug>/index.html   the artboards, paths rewritten to absolute
+/assets/palette.css                        the four colours, shared
+/assets/transition.*                       arrival transition and the way home
+/assets/img/                               artwork from the design handoff
+/vendor/                                   support.js, image-slot.js, _ds/ - do not edit
+```
+
+The artboards were transformed, not rewritten: runtime and design-system paths made absolute, `OpenSoch-*.dc.html` links turned into clean routes, the header mark pointed at `/` with `data-home`, and `data-region`, `<title>`, palette and transition added. Their markup, copy and styling are untouched.
 
 The transition layer styles nothing about the page itself. It paints over whatever is there and gets out of the way, so it cannot collide with the artboards' own design.
 
@@ -254,7 +282,9 @@ The transition layer styles nothing about the page itself. It paints over whatev
 
 1. **Touch.** There is no hover on mobile. The entire interaction model depends on it. Needs a decision before this ships — not before it's built, but before it's public.
 2. **Label placement.** Floating near the live region, or fixed toward its corner outside the brain.
-3. **Confirmed hex values** from Canva.
-4. **The official logo as a file.** The tile map cannot host the wordmark at its real proportion (see section 3). Until the artwork is supplied, the logo beat is a close reconstruction rather than the official logo. With the file, the tile map and the wordmark placement can both be re-derived from it. Note that images pasted into a chat do not reach the repository — the file has to arrive as a file.
-5. **The section designs.** The four artboards live in Claude Design (`OpenSoch-Experiences.dc.html` and siblings). That surface is not reachable from a Claude Code session — the canvas URL 403s and its id is not an artifact — so the files have to be exported and committed. Until then the section pages are shells.
-6. ~~Region cut lines~~ — **resolved.** Straight centre split: between columns 11 and 12, between rows 9 and 10. No tile falls on a line. Loose pixels are assigned automatically by coordinate. Tile counts: purple 73, blue 64, red 46, yellow 59.
+3. **The 17 missing tiles.** Measured, listed in section 3, not applied. Applying them and re-fitting should finally put the wordmark at its official proportion.
+4. **The section pages depend on a third-party CDN at runtime.** `vendor/support.js` fetches React 18, ReactDOM 18 and Babel standalone from `unpkg.com` on every page view, then transpiles each page's script in the browser. That is roughly 3MB of third-party JavaScript before anything renders, and the four pages are blank if unpkg is unreachable — which is how they behave in this sandbox, where egress to unpkg and cdnjs is blocked. The brain, by contrast, is one file with no dependencies. Before this is public the runtime should be vendored locally or the pages precompiled.
+5. ~~Confirmed hex values~~ — **resolved.** Locked palette supplied with the design handoff; see section 4.
+6. ~~The official logo as a file~~ — **resolved.** Arrived as `assets/img/opensoch-pixel-logo.png` with the design handoff.
+7. ~~The section designs~~ — **resolved.** Exported from Claude Design and built into the four routes.
+8. ~~Region cut lines~~ — **resolved.** Straight centre split: between columns 11 and 12, between rows 9 and 10. No tile falls on a line. Loose pixels are assigned automatically by coordinate. Tile counts: purple 73, blue 64, red 46, yellow 59.

@@ -1,73 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Coaching — Opensoch</title>
-<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="/assets/palette.css">
 <link rel="stylesheet" href="/assets/transition.css">
-<style>
-  :root{ --accent:var(--blue) }
-  /* --- stand-in chrome. The real navigation comes from the Claude Design
-     artboards; this exists so the loop from the brain and back is walkable
-     and so the arrival transition can be seen working. --- */
-  header{display:flex;align-items:center;gap:2.5rem;padding:1.4rem 2rem;
-    border-bottom:1px solid #1c1c1c;position:sticky;top:0;background:var(--black);z-index:20}
-  .mark{display:block;width:104px;flex:none}
-  .mark svg{display:block;width:100%;height:auto}
-  .mark svg [stroke]{stroke:var(--white)}
-  nav{display:flex;gap:1.6rem;margin-left:auto;
-    font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
-  nav a{color:#8a8a8a;text-decoration:none}
-  nav a:hover,nav a:focus-visible{color:var(--white)}
-  nav a[aria-current]{color:var(--accent)}
-  main{max-width:62rem;margin:0 auto;padding:5rem 2rem 8rem}
-  h1{font-size:clamp(2.4rem,7vw,4.6rem);letter-spacing:-.02em;line-height:.98;
-    text-wrap:balance;color:var(--accent)}
-  .lede{margin-top:1.6rem;max-width:36rem;font-size:1.05rem;line-height:1.6;color:#c9c9c9}
-  .slot{margin-top:4rem;padding:2.5rem;border:1px dashed #2e2e2e;border-radius:2px;
-    color:#6f6f6f;font-size:.9rem;line-height:1.7}
-  .slot b{color:#9a9a9a;font-weight:600}
-</style>
+<script src="/vendor/support.js"></script>
+<script src="/assets/transition.js" defer></script>
 </head>
 <body data-region="tr">
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="/vendor/_ds/modernist-c5ab0f90-7312-4eae-98ed-37bc8c6bb4f2/styles.css">
+<script src="/vendor/_ds/modernist-c5ab0f90-7312-4eae-98ed-37bc8c6bb4f2/_ds_bundle.js"></script>
+<script src="/vendor/image-slot.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #fff; color: #000; }
+  a { color: #c91a09; text-underline-offset: 3px; }
+  a:hover { color: #000; }
+  :focus-visible { outline: 2px solid #c91a09; outline-offset: 2px; }
+  ::selection { background: #f2cd37; color: #000; }
+</style>
+</helmet>
 
-<header>
-  <a class="mark" href="/" data-home aria-label="Opensoch — back to the brain">
-    <svg viewBox="114 182 660 332" role="img">
-        <title>OPEN SOCH</title>
-        <g fill="none" stroke="var(--black)" stroke-width="26" stroke-linejoin="round"><g fill="none" stroke="#000" stroke-width="26" stroke-linejoin="round">
-        <g transform="translate(124,192)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-        <g transform="translate(294,192)"><path d="M13,117L13,26A13,13 0 0 1 26,13L104,13A13,13 0 0 1 117,26L117,52A13,13 0 0 1 104,65L13,65"/></g>
-        <g transform="translate(464,192)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117M13,65L117,65"/></g>
-        <g transform="translate(634,192)"><path d="M13,117L13,26A13,13 0 0 1 22.19,22.19L107.81,107.81A13,13 0 0 0 117,104L117,13"/></g>
-        <g transform="translate(124,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,52A13,13 0 0 0 26,65L104,65A13,13 0 0 1 117,78L117,104A13,13 0 0 1 104,117L13,117"/></g>
-        <g transform="translate(294,374)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-        <g transform="translate(464,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117"/></g>
-        <g transform="translate(634,374)"><path d="M13,13L13,117M117,13L117,117M13,65L117,65"/></g>
-      </g>
-      </svg>
-  </a>
-  <nav>
-      <a href="/experiences">Experiences</a>
-      <a href="/coaching" aria-current="page">Coaching</a>
-      <a href="/backstory">Backstory</a>
-      <a href="/playground">Playground</a>
-  </nav>
-</header>
+<div style="font-family:'Archivo',system-ui,sans-serif;color:#000;background:#fff">
 
-<main>
-  <h1>Coaching</h1>
-  <p class="lede">Placeholder. This page exists so the brain has somewhere to land.</p>
-  <div class="slot">
-    <b>Awaiting the Claude Design artboard.</b><br>
-    Replace everything inside <code>&lt;main&gt;</code> with <code>OpenSoch-Coaching.dc.html</code>.
-    Keep <code>data-region="tr"</code> on <code>&lt;body&gt;</code> and the
-    <code>data-home</code> attribute on the logo — those two are what wire this page
-    to the brain's dive-in and the way back.
-  </div>
-</main>
+  <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:6px clamp(16px,4vw,56px);background:#fff;border-bottom:2px solid #000">
+    <a href="/" data-home style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#000">
+      <img src="/assets/img/opensoch-pixel-logo.png" alt="OpenSoch" style="height:72px;width:auto;display:block">
+    </a>
+    <nav style="display:flex;align-items:center;gap:clamp(10px,1.6vw,22px);flex-wrap:wrap;justify-content:flex-end">
+      <a href="/experiences" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Experiences</a>
+      <a href="/coaching" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#000;text-decoration:none;border-bottom:2px solid #c91a09;padding-bottom:2px">Coaching</a>
+      <a href="/backstory" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Backstory</a>
+      <a href="/playground" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Playground</a>
+      <a href="#contact" class="btn" style="justify-content:flex-start;background:#c91a09;color:#fff;font-size:12px;letter-spacing:.06em;white-space:nowrap" style-hover="background:#000">Get in touch →</a>
+    </nav>
+  </header>
 
-<script src="/assets/transition.js" defer></script>
+  <section style="border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:clamp(20px,3vw,36px);flex-wrap:wrap">
+      <span style="width:10px;height:10px;background:#0055bf;display:block"></span>
+      <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700">Coaching · Universities · Incubators · Companies · Startups</span>
+    </div>
+    <div data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:end">
+      <h1 style="font-size:clamp(38px,6.2vw,76px);line-height:1.02;letter-spacing:-.03em;margin:0;max-width:15ch">Coaching that doesn't feel like another lecture.</h1>
+      <div>
+        <p style="font-size:clamp(16px,1.5vw,20px);line-height:1.5;max-width:48ch;margin:0 0 24px;color:rgba(0,0,0,.72)">The Experiences get a room moving. Coaching is what holds between them — a defined path for every founder and innovator we work with, run by a firm you can hold to it rather than a mentor who might reschedule.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a href="#contact" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#c91a09;color:#fff;white-space:nowrap" style-hover="background:#000">Get in touch →</a>
+          <a href="#offer" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;border:2px solid #000;color:#000" style-hover="background:#000;color:#fff">What we run</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">Who hires us</div>
+    <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,36px);max-width:18ch">Four kinds of client, one method.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(240px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#0055bf;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Universities &amp; schools</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Entrepreneurship courses, campus incubators and student ventures — where most founders are building their first thing and nobody around them has done it either.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#c91a09;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Incubators &amp; accelerators</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Coaching hours across a cohort, plus the programme design and reporting underneath them.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#81007b;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Companies</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Innovation teams and intrapreneurs, who have the resources a startup lacks and none of the permission to act like one.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Individual startups</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Founders who aren't in anybody's programme and don't want to be. Same sequence, booked directly.</p></div>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,56px)">
+    <div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">The roster problem</div>
+      <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0;max-width:18ch">Most programmes run mentorship the same way.</h2>
+    </div>
+    <div style="align-self:end">
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">There's a roster of volunteers. A founder gets assigned one. They meet once. The second meeting gets rescheduled and then quietly doesn't happen. Nothing is written down. At the end of the year, the programme knows how many sessions were booked and almost nothing about what changed.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">This isn't anyone's fault. Good mentors are busy, unpaid and unmanaged, and no individual mentor is responsible for the programme working.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0;font-weight:600">We are. OpenSoch is hired as a firm, not a person.</p>
+    </div>
+  </section>
+
+  <section id="offer" style="border-bottom:2px solid #000">
+    <div style="padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px) 0">
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">What we run</div>
+      <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,44px);max-width:16ch">Three mandates. Take one or all three.</h2>
+    </div>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><span style="font-size:12px;font-weight:800;letter-spacing:.14em">A</span><span style="width:36px;height:8px;background:#0055bf;display:block"></span></div>
+        <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">Startup Coaching</h3>
+        <p style="font-size:18px;font-weight:600;color:#0055bf;margin:0 0 20px">Coaching hours, delivered against a roadmap.</p>
+        <div style="border:2px solid #000;padding:14px 16px">
+          <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:6px">Bought by</div>
+          <div style="font-size:15px;line-height:1.5;font-weight:600">Programmes by the cohort, companies by the team, and founders one at a time.</div>
+        </div>
+      </div>
+      <div style="display:grid;gap:12px;align-content:start">
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">We don't run open-ended counselling where a founder shows up and talks about whatever's on top. Every founder moves through a defined sequence, so the hours build on each other instead of resetting each time. A founder who has had four sessions with us is measurably further along a known path — not just four conversations deep.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">We work with what's actually in front of a founder in Pakistan: no cap table to speak of, a co-founder problem nobody's naming, a product with three users and a pitch deck written for investors who don't exist here yet. Most coaching frameworks were written for a different market. We translate.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;font-weight:600">When someone needs a specialist, we bring one in from our expert network rather than pretending general coaching covers it.</p>
+      </div>
+    </article>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><span style="font-size:12px;font-weight:800;letter-spacing:.14em">B</span><span style="width:36px;height:8px;background:#81007b;display:block"></span></div>
+        <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">Programme &amp; Curriculum Design</h3>
+        <p style="font-size:18px;font-weight:600;color:#81007b;margin:0 0 20px">For institutions that need more than coaching hours.</p>
+        <div style="border:2px solid #000;padding:14px 16px">
+          <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:6px">When it starts</div>
+          <div style="font-size:15px;line-height:1.5;font-weight:600">Usually a second-year conversation. Most partners start with coaching, and design follows once we know their people.</div>
+        </div>
+      </div>
+      <div style="display:grid;gap:12px;align-content:start">
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">There's usually a gap between what a programme offers and what its founders need, and the people running it can see it before anyone else can. We work with them to define a development roadmap and co-design a programme around it — one that holds up when the next cohort, semester or intake arrives.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">For universities that means a course or a campus incubator track with the Experiences built into it rather than bolted on. For companies it means an internal innovation programme people volunteer for twice.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;font-weight:600">The test is repeatability. A programme that works because of who ran it this time isn't a programme.</p>
+      </div>
+    </article>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><span style="font-size:12px;font-weight:800;letter-spacing:.14em">C</span><span style="width:36px;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;display:block"></span></div>
+        <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">Cohort Systems &amp; Playbooks</h3>
+        <p style="font-size:18px;font-weight:600;margin:0"><span style="background:#f2cd37;padding:2px 8px">The infrastructure underneath both.</span></p>
+      </div>
+      <div style="display:grid;gap:14px;align-content:start">
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">Most programmes track their people across a spreadsheet, a WhatsApp group and someone's memory. We build the operating layer: a single record per venture, visible differently to the founder, the programme operator and the funder, so everyone sees what's relevant to them without three separate reporting exercises.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;font-weight:600">We also write the playbooks — the documented version of how your programme runs, so it survives staff turnover and the end of a semester.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+          <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:14px 14px 18px"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px">Founder view</div><p style="font-size:14px;line-height:1.5;margin:0;color:rgba(0,0,0,.72)">What they covered, what's next.</p></div>
+          <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:14px 14px 18px"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px">Operator view</div><p style="font-size:14px;line-height:1.5;margin:0;color:rgba(0,0,0,.72)">Engagement and movement across the cohort.</p></div>
+          <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:14px 14px 18px"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px">Funder view</div><p style="font-size:14px;line-height:1.5;margin:0;color:rgba(0,0,0,.72)">Outcomes, evidenced as they happen.</p></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,56px)">
+    <div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">How it fits together</div>
+      <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0;max-width:20ch">The Experiences are the visible part. The coaching is what holds between them.</h2>
+    </div>
+    <div style="align-self:end">
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">A kickoff that lands is worth little if week three goes back to slides. Most partners start with one Experience — Open Circles at an orientation, Play-Based Immersion at a kickoff — and bring us in afterwards to design the arc around it.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">Open Coaching, the closing hour of the full OpenSoch Experience, is the same coaches you'd hire here. <a href="/experiences#formats">See the five formats →</a></p>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">The OpenSoch Coaching Method</div>
+    <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,40px);max-width:20ch">Five ideas that show up in almost every engagement.</h2>
+    <div style="display:grid;grid-template-columns:1fr;gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+      <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 20px 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,40px);align-items:start">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:28px;height:10px;background:#81007b;display:block"></span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700">01</span><span style="font-size:clamp(20px,2.2vw,26px);font-weight:900;line-height:1.1">Navigate the mess</span></div>
+        <p style="font-size:16px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Uncertainty isn't a phase founders get through on the way to clarity. It's the working condition. Most founder anxiety comes from expecting it to end.</p>
+      </div>
+      <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 20px 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,40px);align-items:start">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:28px;height:10px;background:#0055bf;display:block"></span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700">02</span><span style="font-size:clamp(20px,2.2vw,26px);font-weight:900;line-height:1.1">Work as play</span></div>
+        <p style="font-size:16px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Teams do their most original thinking when the stakes are temporarily lowered. This isn't softness — it's the fastest route to ideas a team can't reach in a status meeting.</p>
+      </div>
+      <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 20px 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,40px);align-items:start">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:28px;height:10px;background:#c91a09;display:block"></span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700">03</span><span style="font-size:clamp(20px,2.2vw,26px);font-weight:900;line-height:1.1">Learn from the losers</span></div>
+        <p style="font-size:16px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Survivor stories are the worst available data. The startups that died are more instructive, and nobody is telling those stories in this ecosystem.</p>
+      </div>
+      <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 20px 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,40px);align-items:start">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:28px;height:10px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;display:block"></span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700">04</span><span style="font-size:clamp(20px,2.2vw,26px);font-weight:900;line-height:1.1">It takes a village</span></div>
+        <p style="font-size:16px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Most founder problems here are network problems wearing a disguise. Fixing the network fixes more than fixing the pitch deck.</p>
+      </div>
+      <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 20px 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(12px,2vw,40px);align-items:start">
+        <div style="display:flex;align-items:center;gap:14px"><span style="width:28px;height:10px;background:#000000;display:block"></span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700">05</span><span style="font-size:clamp(20px,2.2vw,26px);font-weight:900;line-height:1.1">Know the end game</span></div>
+        <p style="font-size:16px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Founders who haven't thought about how this ends make worse decisions at the start.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,56px)">
+    <div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">Reporting</div>
+      <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0;max-width:18ch">A written account of what actually happened.</h2>
+    </div>
+    <div style="align-self:end">
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">Every institution we work with gets a written account: who engaged, what was covered, what changed, and what we'd recommend for the next cohort or semester.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">If you report to a funder, a dean or a board, this is the part that matters most. Publicly funded programmes are asked to show outcomes and are usually left assembling that evidence from attendance sheets after the fact. <strong style="color:#000">We produce it as we go, because we're the ones in the room.</strong></p>
+    </div>
+  </section>
+
+  <section id="contact" data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;background:#0055bf;color:#fff;padding:clamp(44px,6vw,96px) clamp(16px,4vw,56px);border-bottom:2px solid #000">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:20px">Working with us</div>
+    <p style="font-size:clamp(28px,4.4vw,60px);line-height:1.04;letter-spacing:-.03em;font-weight:900;margin:0 0 26px;max-width:20ch">Tell us who's in the room.</p>
+    <p style="font-size:17px;line-height:1.6;max-width:52ch;margin:0 0 28px">Universities, schools, incubators, accelerators and companies hire us by the programme. Individual founders can book the same coaching directly — no cohort required.</p>
+    <a href="/experiences#book" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#fff;color:#000;white-space:nowrap" style-hover="background:#f2cd37">Get in touch →</a>
+  </section>
+
+  <footer style="border-top:2px solid #000;padding:28px clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;align-items:start">
+    <div>
+      <img src="/assets/img/opensoch-pixel-logo.png" alt="OpenSoch" style="height:96px;width:auto;display:block;margin:-14px 0 8px -10px">
+      <p style="font-size:14px;line-height:1.55;margin:0;color:rgba(0,0,0,.72);max-width:32ch">Play based community experiences for founders and innovators.</p>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:12px">Pages</div>
+      <div style="display:grid;gap:8px;font-size:14px">
+        <a href="/experiences" style="color:#000;text-decoration:none">Experiences</a>
+        <a href="/coaching" style="color:#000;text-decoration:none">Coaching</a>
+        <a href="/backstory" style="color:#000;text-decoration:none">Backstory</a>
+        <a href="/playground" style="color:#000;text-decoration:none">Playground</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:12px">Get in touch</div>
+      <a href="/experiences#book" style="font-size:14px;color:#c91a09;text-decoration:none">Plan an experience →</a>
+      <div style="display:flex;gap:6px;margin-top:18px">
+        <span style="width:14px;height:14px;background:#81007b;display:block"></span>
+        <span style="width:14px;height:14px;background:#0055bf;display:block"></span>
+        <span style="width:14px;height:14px;background:#c91a09;display:block"></span>
+        <span style="width:14px;height:14px;background:#f2cd37;display:block"></span>
+      </div>
+      <div style="font-size:12px;color:rgba(0,0,0,.72);margin-top:18px">© 2026 OpenSoch. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const reveal = (el) => { el.style.opacity = "1"; el.style.transform = "none"; };
+    const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
+    nodes.forEach((n) => { if (n.getBoundingClientRect().top < window.innerHeight) reveal(n); });
+    if (!("IntersectionObserver" in window)) { nodes.forEach(reveal); return; }
+    this._io = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) { reveal(e.target); this._io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    nodes.forEach((n) => this._io.observe(n));
+    this._fallback = setTimeout(() => nodes.forEach(reveal), 1200);
+  }
+  componentWillUnmount() { if (this._io) this._io.disconnect(); clearTimeout(this._fallback); }
+  renderVals() { return {}; }
+}
+
+</script>
 </body>
 </html>

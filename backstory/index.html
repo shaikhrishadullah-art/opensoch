@@ -1,73 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Backstory — Opensoch</title>
-<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="/assets/palette.css">
 <link rel="stylesheet" href="/assets/transition.css">
-<style>
-  :root{ --accent:var(--red) }
-  /* --- stand-in chrome. The real navigation comes from the Claude Design
-     artboards; this exists so the loop from the brain and back is walkable
-     and so the arrival transition can be seen working. --- */
-  header{display:flex;align-items:center;gap:2.5rem;padding:1.4rem 2rem;
-    border-bottom:1px solid #1c1c1c;position:sticky;top:0;background:var(--black);z-index:20}
-  .mark{display:block;width:104px;flex:none}
-  .mark svg{display:block;width:100%;height:auto}
-  .mark svg [stroke]{stroke:var(--white)}
-  nav{display:flex;gap:1.6rem;margin-left:auto;
-    font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
-  nav a{color:#8a8a8a;text-decoration:none}
-  nav a:hover,nav a:focus-visible{color:var(--white)}
-  nav a[aria-current]{color:var(--accent)}
-  main{max-width:62rem;margin:0 auto;padding:5rem 2rem 8rem}
-  h1{font-size:clamp(2.4rem,7vw,4.6rem);letter-spacing:-.02em;line-height:.98;
-    text-wrap:balance;color:var(--accent)}
-  .lede{margin-top:1.6rem;max-width:36rem;font-size:1.05rem;line-height:1.6;color:#c9c9c9}
-  .slot{margin-top:4rem;padding:2.5rem;border:1px dashed #2e2e2e;border-radius:2px;
-    color:#6f6f6f;font-size:.9rem;line-height:1.7}
-  .slot b{color:#9a9a9a;font-weight:600}
-</style>
+<script src="/vendor/support.js"></script>
+<script src="/assets/transition.js" defer></script>
 </head>
 <body data-region="bl">
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="/vendor/_ds/modernist-c5ab0f90-7312-4eae-98ed-37bc8c6bb4f2/styles.css">
+<script src="/vendor/_ds/modernist-c5ab0f90-7312-4eae-98ed-37bc8c6bb4f2/_ds_bundle.js"></script>
+<script src="/vendor/image-slot.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #fff; color: #000; }
+  a { color: #c91a09; text-underline-offset: 3px; }
+  a:hover { color: #000; }
+  :focus-visible { outline: 2px solid #c91a09; outline-offset: 2px; }
+  ::selection { background: #f2cd37; color: #000; }
+</style>
+</helmet>
 
-<header>
-  <a class="mark" href="/" data-home aria-label="Opensoch — back to the brain">
-    <svg viewBox="114 182 660 332" role="img">
-        <title>OPEN SOCH</title>
-        <g fill="none" stroke="var(--black)" stroke-width="26" stroke-linejoin="round"><g fill="none" stroke="#000" stroke-width="26" stroke-linejoin="round">
-        <g transform="translate(124,192)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-        <g transform="translate(294,192)"><path d="M13,117L13,26A13,13 0 0 1 26,13L104,13A13,13 0 0 1 117,26L117,52A13,13 0 0 1 104,65L13,65"/></g>
-        <g transform="translate(464,192)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117M13,65L117,65"/></g>
-        <g transform="translate(634,192)"><path d="M13,117L13,26A13,13 0 0 1 22.19,22.19L107.81,107.81A13,13 0 0 0 117,104L117,13"/></g>
-        <g transform="translate(124,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,52A13,13 0 0 0 26,65L104,65A13,13 0 0 1 117,78L117,104A13,13 0 0 1 104,117L13,117"/></g>
-        <g transform="translate(294,374)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-        <g transform="translate(464,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117"/></g>
-        <g transform="translate(634,374)"><path d="M13,13L13,117M117,13L117,117M13,65L117,65"/></g>
-      </g>
-      </svg>
-  </a>
-  <nav>
-      <a href="/experiences">Experiences</a>
-      <a href="/coaching">Coaching</a>
-      <a href="/backstory" aria-current="page">Backstory</a>
-      <a href="/playground">Playground</a>
-  </nav>
-</header>
+<div style="font-family:'Archivo',system-ui,sans-serif;color:#000;background:#fff">
 
-<main>
-  <h1>Backstory</h1>
-  <p class="lede">Placeholder. This page exists so the brain has somewhere to land.</p>
-  <div class="slot">
-    <b>Awaiting the Claude Design artboard.</b><br>
-    Replace everything inside <code>&lt;main&gt;</code> with <code>OpenSoch-Backstory.dc.html</code>.
-    Keep <code>data-region="bl"</code> on <code>&lt;body&gt;</code> and the
-    <code>data-home</code> attribute on the logo — those two are what wire this page
-    to the brain's dive-in and the way back.
-  </div>
-</main>
+  <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:6px clamp(16px,4vw,56px);background:#fff;border-bottom:2px solid #000">
+    <a href="/" data-home style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#000">
+      <img src="/assets/img/opensoch-pixel-logo.png" alt="OpenSoch" style="height:72px;width:auto;display:block">
+    </a>
+    <nav style="display:flex;align-items:center;gap:clamp(10px,1.6vw,22px);flex-wrap:wrap;justify-content:flex-end">
+      <a href="/experiences" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Experiences</a>
+      <a href="/coaching" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Coaching</a>
+      <a href="/backstory" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#000;text-decoration:none;border-bottom:2px solid #c91a09;padding-bottom:2px">Backstory</a>
+      <a href="/playground" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Playground</a>
+      <a href="/experiences#book" class="btn" style="justify-content:flex-start;background:#c91a09;color:#fff;font-size:12px;letter-spacing:.06em;white-space:nowrap" style-hover="background:#000">Plan an experience →</a>
+    </nav>
+  </header>
 
-<script src="/assets/transition.js" defer></script>
+  <section style="border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:clamp(20px,3vw,36px);flex-wrap:wrap">
+      <span style="width:10px;height:10px;background:#81007b;display:block"></span>
+      <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700">Backstory · An alternative approach to innovation</span>
+    </div>
+    <div data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:end;margin-bottom:clamp(28px,4vw,48px)">
+      <h1 style="font-size:clamp(38px,6.2vw,76px);line-height:1.02;letter-spacing:-.03em;margin:0;max-width:15ch">Play is the way.</h1>
+      <p style="font-size:clamp(16px,1.5vw,20px);line-height:1.5;max-width:46ch;margin:0;color:rgba(0,0,0,.72)">Founders and innovators don't learn much sitting still. So we coach them standing up — building, drumming, arguing, pitching a plastic butterfly to the room. Play is the method, not the warm-up, and the community it makes is stickier than apple sauce.</p>
+    </div>
+    <figure data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease .1s,transform .7s ease .1s;margin:0;border:2px solid #000">
+      <div style="height:clamp(300px,40vw,540px);filter:grayscale(1) contrast(1.08)">
+        <img src="/assets/img/opensoch-team.jpg" alt="Shahzaib Zulfiqar, Rishad Shaikh and Mishal Kamal" style="width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block">
+      </div>
+      <figcaption style="border-top:2px solid #000;padding:14px 18px;display:flex;flex-wrap:wrap;gap:18px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700">
+        <span><span style="color:#81007b">◼</span> Shahzaib Zulfiqar · CEO</span>
+        <span><span style="color:#0055bf">◼</span> Rishad Shaikh · Chief Creative Officer</span>
+        <span><span style="color:#c91a09">◼</span> Mishal Kamal · Head of Play</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,56px)">
+    <div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">The origin</div>
+      <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0;max-width:18ch">It started with eight LEGO bricks and a room that wouldn't speak.</h2>
+    </div>
+    <div style="align-self:end">
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">The first version was an experiment at someone else's event: hand every founder the same eight pieces, give them sixty seconds to build a butterfly, and see what a room does when the instruction is absurd enough that nobody can perform expertise.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">It worked in the way physical things work. People stood up. People laughed at their own butterfly. Then they talked to each other for an hour without being told to network.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">Every format since — the circles, the drums, the deep dives, the open hour — came from the same question: what has to happen physically to turn a group of random innovators into a genuine community?</p>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,56px);margin-bottom:clamp(24px,3vw,40px)">
+      <div>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">Before Opensoch</div>
+        <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0;max-width:18ch">A band that keeps re-forming.</h2>
+      </div>
+      <div style="align-self:end">
+        <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">Shez and Rish met in 2011 on opposite sides of the table — Rish was heading digital at Creative Chaos, Shez doing strategy and insights at Unilever Pakistan. They went their own ways: Shez to Singapore and a decade at Unilever, then HP; Rish to his own agency in Pakistan.</p>
+        <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">In 2017 they built Jambro, a way for musicians to find each other. It reached a community across 500 cities and epic jams from the ports of Karachi to ten thousand feet up at the Passu Cones. Then Covid stopped live music everywhere at once, and they exited reluctantly.</p>
+        <p style="font-size:17px;line-height:1.6;margin:0;font-weight:600">Opensoch is the same instinct, pointed at founders and innovators instead of musicians: put people in a room and give them something to do together.</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(240px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="width:100%;height:8px;background:#0055bf;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">2011</div><div style="font-size:17px;font-weight:800;line-height:1.15">Two people on opposite sides of a Unilever brief</div></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="width:100%;height:8px;background:#81007b;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">2017</div><div style="font-size:17px;font-weight:800;line-height:1.15">Jambro — a community for musicians, built together</div></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="width:100%;height:8px;background:#c91a09;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">2020</div><div style="font-size:17px;font-weight:800;line-height:1.15">Live music stops. A reluctant exit.</div></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="width:100%;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">Now</div><div style="font-size:17px;font-weight:800;line-height:1.15">Opensoch, run out of Islamabad with founders and innovators in the room</div></div>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">What we believe</div>
+    <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,40px);max-width:16ch">Four things we keep proving to ourselves.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(240px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#81007b;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">01</div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Hands before slides</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">People remember what they made, not what they were shown.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#0055bf;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">02</div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Everyone speaks early</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">A person who hasn't spoken in the first ten minutes usually won't.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#c91a09;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">03</div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Low stakes, real skills</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Ten seconds pitching a plastic butterfly teaches what an hour of theory can't.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">04</div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">The room is the product</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">We measure a session by who is still talking after it ends.</p></div>
+    </div>
+  </section>
+
+  <section id="team" style="border-bottom:2px solid #000">
+    <div style="padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px) 0">
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">The team</div>
+      <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px;max-width:16ch">The people who run the room.</h2>
+      <p style="font-size:16px;line-height:1.6;margin:0 0 clamp(24px,4vw,40px);max-width:60ch;color:rgba(0,0,0,.72)">Three of us run the sessions — plus a wider bench of facilitators, coaches and musicians we bring in by format.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+      <div data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:24px 20px 28px">
+        <div style="height:260px;filter:grayscale(1) contrast(1.08);border:2px solid #000;margin-bottom:16px"><image-slot id="bs-person-1" shape="rect" fit="cover" placeholder="Drop a portrait"></image-slot></div>
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#81007b;margin-bottom:6px">CEO</div>
+        <div style="font-size:22px;font-weight:900;line-height:1.1;margin-bottom:8px">Shahzaib Zulfiqar</div>
+        <p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Twenty years of strategy and insights across Unilever Pakistan, Singapore and HP. Coaches founders at NIC Islamabad and Faisalabad.</p>
+      </div>
+      <div data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease .05s,transform .7s ease .05s;background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:24px 20px 28px">
+        <div style="height:260px;filter:grayscale(1) contrast(1.08);border:2px solid #000;margin-bottom:16px"><image-slot id="bs-person-2" shape="rect" fit="cover" placeholder="Drop a portrait"></image-slot></div>
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#0055bf;margin-bottom:6px">Chief Creative Officer</div>
+        <div style="font-size:22px;font-weight:900;line-height:1.1;margin-bottom:8px">Rishad Shaikh</div>
+        <p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Mind blowing ideas — safety required. Twenty years of building things in Pakistan. Founded the agency Grocode, and built Jambro.</p>
+      </div>
+      <div data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease .1s,transform .7s ease .1s;background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:24px 20px 28px">
+        <div style="height:260px;filter:grayscale(1) contrast(1.08);border:2px solid #000;margin-bottom:16px"><image-slot id="bs-person-3" shape="rect" fit="cover" placeholder="Drop a portrait"></image-slot></div>
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#c91a09;margin-bottom:6px">Head of Play</div>
+        <div style="font-size:22px;font-weight:900;line-height:1.1;margin-bottom:8px">Mishal Kamal</div>
+        <p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">A masters in industrial design for play, and time in the R&amp;D department at LEGO. Designs what the room actually does with its hands.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;background:#81007b;color:#fff;padding:clamp(44px,6vw,96px) clamp(16px,4vw,56px);border-bottom:2px solid #000">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:20px">Still the same question</div>
+    <p style="font-size:clamp(28px,4.6vw,62px);line-height:1.02;letter-spacing:-.03em;font-weight:900;margin:0 0 24px;max-width:20ch">How to build a community where innovation can actually thrive?</p>
+    <p style="font-size:18px;line-height:1.55;margin:0 0 28px;max-width:46ch">We've been the founders in the room. We know what's missing from it.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="/experiences#book" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#fff;color:#000" style-hover="background:#f2cd37">Plan an experience →</a>
+      <a href="/playground" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;border:2px solid #fff;color:#fff" style-hover="background:#fff;color:#81007b">See what we're testing</a>
+    </div>
+  </section>
+
+  <footer style="border-top:2px solid #000;padding:28px clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;align-items:start">
+    <div>
+      <img src="/assets/img/opensoch-pixel-logo.png" alt="OpenSoch" style="height:96px;width:auto;display:block;margin:-14px 0 8px -10px">
+      <p style="font-size:14px;line-height:1.55;margin:0;color:rgba(0,0,0,.72);max-width:32ch">Play based community experiences and workshops for founders.</p>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:12px">Pages</div>
+      <div style="display:grid;gap:8px;font-size:14px">
+        <a href="/experiences" style="color:#000;text-decoration:none">Experiences</a>
+        <a href="/coaching" style="color:#000;text-decoration:none">Coaching</a>
+        <a href="/backstory" style="color:#000;text-decoration:none">Backstory</a>
+        <a href="/playground" style="color:#000;text-decoration:none">Playground</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:12px">Get in touch</div>
+      <a href="/experiences#book" style="font-size:14px;color:#c91a09;text-decoration:none">Plan an experience →</a>
+      <div style="display:flex;gap:6px;margin-top:18px">
+        <span style="width:14px;height:14px;background:#81007b;display:block"></span>
+        <span style="width:14px;height:14px;background:#0055bf;display:block"></span>
+        <span style="width:14px;height:14px;background:#c91a09;display:block"></span>
+        <span style="width:14px;height:14px;background:#f2cd37;display:block"></span>
+      </div>
+      <div style="font-size:12px;color:rgba(0,0,0,.72);margin-top:18px">© 2026 OpenSoch. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const reveal = (el) => { el.style.opacity = "1"; el.style.transform = "none"; };
+    const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
+    nodes.forEach((n) => { if (n.getBoundingClientRect().top < window.innerHeight) reveal(n); });
+    if (!("IntersectionObserver" in window)) { nodes.forEach(reveal); return; }
+    this._io = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) { reveal(e.target); this._io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    nodes.forEach((n) => this._io.observe(n));
+    this._fallback = setTimeout(() => nodes.forEach(reveal), 1200);
+  }
+  componentWillUnmount() { if (this._io) this._io.disconnect(); clearTimeout(this._fallback); }
+  renderVals() { return {}; }
+}
+
+</script>
 </body>
 </html>

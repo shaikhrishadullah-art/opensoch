@@ -21,8 +21,10 @@ then `http://localhost:8000`. It will open from `file://` too, but serve it if y
 | File | |
 |---|---|
 | `index.html` | The brain: load sequence, colour rest state, hover, dive. One file. |
-| `experiences/` `coaching/` `backstory/` `playground/` | Section pages. **Shells** — nav and transition wiring only; `<main>` awaits the Claude Design artboard. |
-| `assets/brand.css` | The palette. The only place the four hexes should appear. |
+| `experiences/` `coaching/` `backstory/` `playground/` | The four section pages, built from the Claude Design artboards. |
+| `assets/palette.css` | The four colours. Tokens only — no reset, so it cannot collide with the artboards' design system. The only place the hexes should appear. |
+| `assets/img/` | Artwork from the design handoff, including the official pixel logo. |
+| `vendor/` | `support.js`, `image-slot.js`, `_ds/` — the design system runtime. **Do not edit.** |
 | `assets/transition.css` `assets/transition.js` | The arrival transition and the way back to the brain. Design-agnostic; styles nothing about the page. |
 | `CLAUDE.md` | The spec. Authoritative. |
 | `tilemap.json` | Canonical tile data: 23×19 grid, 242 filled tiles, each tagged `tl`/`tr`/`bl`/`br`. |
@@ -46,8 +48,8 @@ Keyboard works: the four labels are tabbable links that light their own region.
 
 ## What is not built
 
-- **The section content.** The four routes resolve to shells. Their `<main>` is a placeholder; the real content is in the Claude Design artboards, which have to be exported and committed — that surface is not reachable from a Claude Code session.
-- **Playground as a blog.** It is a single shell like the rest; post URLs beneath it do not exist yet.
+- **Playground's posts have no URLs.** They are client-side only — a `POSTS` array and an `openId` state that swaps the index for a detail view. Fine for now; it means a post cannot be linked to or shared.
+- **The 17 missing tiles.** The official logo has 259 tiles; `tilemap.json` has 242, and the 17 it lacks are the reason the wordmark cannot sit at full size. Measured and listed in `CLAUDE.md` section 3, not applied.
 - **Touch.** There is no hover on mobile and the whole interaction model depends on it. This is open item 1 in the spec and it needs a decision before launch.
 - **The glitch transition.** The grid currently appears and disappears on a clean cut. The brief allows it to fade in glitchily between hovers; that was left until the logo itself is settled.
 
@@ -66,9 +68,23 @@ Drop the artboard's markup into the shell's `<main>` and keep three things on th
 
 `ROUTES` in `index.html` maps each region to its path. Clicking a tile dives; clicking a notch between regions does nothing, because detection is the same per-tile test the hover uses.
 
-## The open blocker: the official logo
+## Read this before launch: the pages need a CDN to render
 
-**The wordmark is not at its real proportion, and it cannot be until someone supplies the official logo as a file.**
+`vendor/support.js` fetches **React 18, ReactDOM 18 and Babel standalone from `unpkg.com` at runtime**, then transpiles each page's script in the browser on every view. Roughly 3MB of third-party JavaScript before anything paints, and the four section pages render **blank** if unpkg is unreachable.
+
+The brain is the opposite — one file, no dependencies, no network. So the site currently has two very different reliability profiles either side of one click.
+
+Before this goes public, either vendor those three libraries locally and point `support.js` at them, or precompile each page's `data-dc-script` so Babel is not needed in the browser at all. This was not done here because egress to unpkg and cdnjs is blocked in the build sandbox, so the libraries could not be downloaded — and it is a decision about the production setup, not a wiring detail.
+
+## Resolved: the official logo
+
+The artwork arrived with the design handoff as `assets/img/opensoch-pixel-logo.png` — 2293×1912, the 23×19 grid at ~100px a tile, transparent surround. Measured against `tilemap.json`: 259 tiles in the logo, 242 in our map, 93.4% agreement, **nothing in our map is wrong**, 17 tiles are missing. See `CLAUDE.md` section 3 for the list.
+
+## Superseded: the old wordmark blocker
+
+*(Kept for the reasoning; the cause is now measured — see above.)*
+
+**The wordmark is not at its real proportion.**
 
 Measured off the official logo, the `OPEN SOCH` block is about **16.5 tiles wide at left ~3.15, top ~4.85**, with every letter fully carved out of the brain. On this tile map that placement does not exist. Past about 13 tiles the `N` and the `H` run off the silhouette into black, where a black letterform is invisible. At 16.5 tiles, every position on the grid was searched: the best any of them manages is ~93% of the letterform ink landing on a filled tile.
 

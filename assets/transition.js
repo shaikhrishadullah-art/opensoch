@@ -19,9 +19,24 @@
   const region=document.body.dataset.region;
 
   /* Links home carry this page's region, so the brain opens on the closed
-     colour state instead of replaying its load sequence. */
-  document.querySelectorAll('a[data-home]').forEach(a=>{
-    a.setAttribute('href', region && COLOUR[region] ? '/?from='+region : '/');
+     colour state instead of replaying its load sequence.
+     The section pages are rendered at runtime by the design system, so the
+     nav does not exist yet when this runs. Delegation handles the click
+     whenever the link appears; the observer keeps the visible href honest. */
+  const homeHref = region && COLOUR[region] ? '/?from='+region : '/';
+  const retarget = () =>
+    document.querySelectorAll('a[data-home]:not([data-home-set])').forEach(a=>{
+      a.setAttribute('href', homeHref);
+      a.setAttribute('data-home-set','');
+    });
+  retarget();
+  new MutationObserver(retarget).observe(document.documentElement,
+    {childList:true, subtree:true});
+  document.addEventListener('click', e=>{
+    const a=e.target.closest && e.target.closest('a[data-home]');
+    if(!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    e.preventDefault();
+    location.href=homeHref;
   });
 
   const from=q.get('from');

@@ -1,0 +1,15 @@
+/* Opensoch palette — the single source for the brand colours.
+   Tokens only: no reset, no element styles. It is linked by the brain and by
+   every section page, and the section pages carry their own design system, so
+   anything beyond custom properties here would collide with it.
+
+   Values confirmed from the Claude Design handoff ("Brand constraints
+   (locked)"). These supersede the eyedropper guesses. */
+:root{
+  --black:#000;
+  --white:#fff;
+  --purple:#81007b;   /* Experiences  top-left     */
+  --blue:#0055bf;     /* Coaching     top-right    */
+  --red:#c91a09;      /* Backstory    bottom-left  */
+  --yellow:#f2cd37;   /* Playground   bottom-right */
+}

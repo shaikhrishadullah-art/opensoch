@@ -1,73 +1,336 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Experiences — Opensoch</title>
-<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="/assets/palette.css">
 <link rel="stylesheet" href="/assets/transition.css">
-<style>
-  :root{ --accent:var(--purple) }
-  /* --- stand-in chrome. The real navigation comes from the Claude Design
-     artboards; this exists so the loop from the brain and back is walkable
-     and so the arrival transition can be seen working. --- */
-  header{display:flex;align-items:center;gap:2.5rem;padding:1.4rem 2rem;
-    border-bottom:1px solid #1c1c1c;position:sticky;top:0;background:var(--black);z-index:20}
-  .mark{display:block;width:104px;flex:none}
-  .mark svg{display:block;width:100%;height:auto}
-  .mark svg [stroke]{stroke:var(--white)}
-  nav{display:flex;gap:1.6rem;margin-left:auto;
-    font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
-  nav a{color:#8a8a8a;text-decoration:none}
-  nav a:hover,nav a:focus-visible{color:var(--white)}
-  nav a[aria-current]{color:var(--accent)}
-  main{max-width:62rem;margin:0 auto;padding:5rem 2rem 8rem}
-  h1{font-size:clamp(2.4rem,7vw,4.6rem);letter-spacing:-.02em;line-height:.98;
-    text-wrap:balance;color:var(--accent)}
-  .lede{margin-top:1.6rem;max-width:36rem;font-size:1.05rem;line-height:1.6;color:#c9c9c9}
-  .slot{margin-top:4rem;padding:2.5rem;border:1px dashed #2e2e2e;border-radius:2px;
-    color:#6f6f6f;font-size:.9rem;line-height:1.7}
-  .slot b{color:#9a9a9a;font-weight:600}
-</style>
+<script src="/vendor/support.js"></script>
+<script src="/assets/transition.js" defer></script>
 </head>
 <body data-region="tl">
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="/vendor/_ds/modernist-c5ab0f90-7312-4eae-98ed-37bc8c6bb4f2/styles.css">
+<script src="/vendor/_ds/modernist-c5ab0f90-7312-4eae-98ed-37bc8c6bb4f2/_ds_bundle.js"></script>
+<script src="/vendor/image-slot.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #fff; color: #000; }
+  a { color: #c91a09; text-underline-offset: 3px; }
+  a:hover { color: #000; }
+  :focus-visible { outline: 2px solid #c91a09; outline-offset: 2px; }
+  ::selection { background: #f2cd37; color: #000; }
+  input, select, textarea { font-family: "Archivo", system-ui, sans-serif; }
+  .input { border-color: #000 !important; background: #fff !important; color: #000 !important; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes flutter { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+</style>
+</helmet>
 
-<header>
-  <a class="mark" href="/" data-home aria-label="Opensoch — back to the brain">
-    <svg viewBox="114 182 660 332" role="img">
-        <title>OPEN SOCH</title>
-        <g fill="none" stroke="var(--black)" stroke-width="26" stroke-linejoin="round"><g fill="none" stroke="#000" stroke-width="26" stroke-linejoin="round">
-        <g transform="translate(124,192)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-        <g transform="translate(294,192)"><path d="M13,117L13,26A13,13 0 0 1 26,13L104,13A13,13 0 0 1 117,26L117,52A13,13 0 0 1 104,65L13,65"/></g>
-        <g transform="translate(464,192)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117M13,65L117,65"/></g>
-        <g transform="translate(634,192)"><path d="M13,117L13,26A13,13 0 0 1 22.19,22.19L107.81,107.81A13,13 0 0 0 117,104L117,13"/></g>
-        <g transform="translate(124,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,52A13,13 0 0 0 26,65L104,65A13,13 0 0 1 117,78L117,104A13,13 0 0 1 104,117L13,117"/></g>
-        <g transform="translate(294,374)"><path d="M26,13L104,13A13,13 0 0 1 117,26L117,104A13,13 0 0 1 104,117L26,117A13,13 0 0 1 13,104L13,26A13,13 0 0 1 26,13Z"/></g>
-        <g transform="translate(464,374)"><path d="M117,13L26,13A13,13 0 0 0 13,26L13,104A13,13 0 0 0 26,117L117,117"/></g>
-        <g transform="translate(634,374)"><path d="M13,13L13,117M117,13L117,117M13,65L117,65"/></g>
-      </g>
-      </svg>
-  </a>
-  <nav>
-      <a href="/experiences" aria-current="page">Experiences</a>
-      <a href="/coaching">Coaching</a>
-      <a href="/backstory">Backstory</a>
-      <a href="/playground">Playground</a>
-  </nav>
-</header>
+<div style="font-family:'Archivo',system-ui,sans-serif;color:#000;background:#fff">
 
-<main>
-  <h1>Experiences</h1>
-  <p class="lede">Placeholder. This page exists so the brain has somewhere to land.</p>
-  <div class="slot">
-    <b>Awaiting the Claude Design artboard.</b><br>
-    Replace everything inside <code>&lt;main&gt;</code> with <code>OpenSoch-Experiences.dc.html</code>.
-    Keep <code>data-region="tl"</code> on <code>&lt;body&gt;</code> and the
-    <code>data-home</code> attribute on the logo — those two are what wire this page
-    to the brain's dive-in and the way back.
-  </div>
-</main>
+  <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:6px clamp(16px,4vw,56px);background:#fff;border-bottom:2px solid #000">
+    <a href="/" data-home style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#000">
+      <img src="/assets/img/opensoch-pixel-logo.png" alt="OpenSoch" style="height:72px;width:auto;display:block">
+    </a>
+    <nav style="display:flex;align-items:center;gap:clamp(10px,1.6vw,22px);flex-wrap:wrap;justify-content:flex-end">
+      <a href="/experiences" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#000;text-decoration:none;border-bottom:2px solid #c91a09;padding-bottom:2px">Experiences</a>
+      <a href="/coaching" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Coaching</a>
+      <a href="/backstory" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Backstory</a>
+      <a href="/playground" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Playground</a>
+      <a href="#book" class="btn" style="justify-content:flex-start;background:#c91a09;color:#fff;font-size:12px;letter-spacing:.06em;white-space:nowrap" style-hover="background:#000">Plan an experience →</a>
+    </nav>
+  </header>
 
-<script src="/assets/transition.js" defer></script>
+  <section style="border-bottom:2px solid #000;padding:clamp(28px,5vw,64px) clamp(16px,4vw,56px) clamp(24px,4vw,52px)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:clamp(20px,3vw,36px);flex-wrap:wrap">
+      <span style="width:10px;height:10px;background:#81007b;display:block"></span>
+      <span style="width:10px;height:10px;background:#0055bf;display:block"></span>
+      <span style="width:10px;height:10px;background:#c91a09;display:block"></span>
+      <span style="width:10px;height:10px;background:#f2cd37;display:block"></span>
+      <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-left:6px">Experiences · Universities · Companies · Incubators · Coffee shops</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:end">
+      <div data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease">
+        <h1 style="font-size:clamp(38px,6.2vw,76px);line-height:1.02;letter-spacing:-.03em;margin:0 0 24px;max-width:15ch">No more boring lectures and endless slides.</h1>
+        <p style="font-size:clamp(16px,1.5vw,20px);line-height:1.5;max-width:48ch;margin:0 0 28px;color:rgba(0,0,0,.72)">Play based community experiences for founders and innovators. Sessions that get a room building, drumming, arguing and talking — with their hands and their voices, not from a chair. In a lecture hall, an incubator, an office, or a coffee shop on a random Saturday.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a href="#book" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#c91a09;color:#fff" style-hover="background:#000">Plan an experience →</a>
+          <a href="#formats" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;border:2px solid #000;color:#000" style-hover="background:#000;color:#fff">See the five formats</a>
+        </div>
+      </div>
+      <div data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease .1s,transform .7s ease .1s;display:flex;justify-content:center">
+        <svg viewBox="0 0 16 14" style="width:100%;max-width:460px;height:auto;animation:flutter 6s ease-in-out infinite" aria-hidden="true">
+          <defs><pattern id="px" width="1" height="1" patternUnits="userSpaceOnUse"><path d="M1 0V1M0 1H1" stroke="#fff" stroke-width="0.1" fill="none"></path></pattern></defs>
+          <g fill="#81007b"><rect x="4" y="1" width="2" height="1"></rect><rect x="2" y="2" width="4" height="1"></rect><rect x="1" y="3" width="5" height="1"></rect><rect x="0" y="4" width="6" height="1"></rect><rect x="0" y="5" width="6" height="1"></rect><rect x="1" y="6" width="5" height="1"></rect><rect x="0" y="0" width="1" height="1"></rect></g>
+          <g fill="#c91a09"><rect x="2" y="8" width="4" height="1"></rect><rect x="1" y="9" width="5" height="1"></rect><rect x="1" y="10" width="5" height="1"></rect><rect x="2" y="11" width="4" height="1"></rect><rect x="4" y="12" width="2" height="1"></rect><rect x="0" y="13" width="1" height="1"></rect></g>
+          <g fill="#0055bf"><rect x="10" y="1" width="2" height="1"></rect><rect x="10" y="2" width="4" height="1"></rect><rect x="10" y="3" width="5" height="1"></rect><rect x="10" y="4" width="6" height="1"></rect><rect x="10" y="5" width="6" height="1"></rect><rect x="10" y="6" width="5" height="1"></rect><rect x="15" y="0" width="1" height="1"></rect></g>
+          <g fill="#f2cd37"><rect x="10" y="8" width="4" height="1"></rect><rect x="10" y="9" width="5" height="1"></rect><rect x="10" y="10" width="5" height="1"></rect><rect x="10" y="11" width="4" height="1"></rect><rect x="10" y="12" width="2" height="1"></rect><rect x="15" y="13" width="1" height="1"></rect></g>
+          <g fill="#000"><rect x="7" y="2" width="2" height="10"></rect><rect x="6" y="0" width="1" height="1"></rect><rect x="9" y="0" width="1" height="1"></rect><rect x="6" y="13" width="1" height="1"></rect><rect x="9" y="13" width="1" height="1"></rect></g>
+          <rect x="0" y="0" width="16" height="14" fill="url(#px)"></rect>
+        </svg>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,48px);margin-top:clamp(24px,4vw,48px);padding-top:16px;border-top:2px solid #000;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72)">
+      <span>Five formats</span><span>Any room, any group size</span>
+    </div>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,56px)">
+    <div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">Why this exists</div>
+      <h2 style="font-size:clamp(26px,3.4vw,46px);line-height:1.05;margin:0;max-width:18ch">The people in the room are the point. Most events seat them and talk at them.</h2>
+    </div>
+    <div style="align-self:end">
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">Some of it looks like a workshop. Some of it looks like a room full of adults playing. All of it is designed to do the thing a kickoff, an orientation or an away day is supposed to do and usually doesn't: turn random strangers into a genuine community that sticks.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">Every session runs on its own. Together they form the <strong style="color:#000">OpenSoch Experience</strong>, a four hour arc that scales from a student society to a company offsite.</p>
+    </div>
+  </section>
+
+  <figure data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;margin:0;border-bottom:2px solid #000">
+    <div style="height:clamp(260px,34vw,460px);filter:grayscale(1) contrast(1.08)">
+      <img src="/assets/img/experience-lego.jpg" alt="A room of founders and innovators building with LEGO at an OpenSoch session" style="width:100%;height:100%;object-fit:cover;display:block">
+    </div>
+  </figure>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">Who we run them for</div>
+    <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,36px);max-width:18ch">Anywhere people are expected to sit still and be innovative.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(240px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#0055bf;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Schools &amp; universities</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Orientations, entrepreneurship courses, student societies and campus incubators — where most people are meeting their first collaborator.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#c91a09;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Incubators &amp; accelerators</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Cohort kickoffs, demo days and the weeks in between, where a batch either becomes a cohort or stays a list of names.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#81007b;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Companies</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Innovation teams, offsites and away days for people who have sat through the workshop-with-sticky-notes version already.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;margin-bottom:14px"></div><div style="font-size:20px;font-weight:900;line-height:1.1;margin-bottom:8px">Coffee shops</div><p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">Our own open community sessions — no programme, no badge required. Anyone building something can show up.</p></div>
+    </div>
+  </section>
+
+  <section id="arc" data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px">
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700">The four hour arc</div>
+      <span style="font-size:13px;color:rgba(0,0,0,.72)">Open Circles starts it. Open Coaching closes it. The middle is yours to pick.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:18px 16px 22px"><div style="width:100%;height:8px;background:#0055bf;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px">Opens</div><div style="font-size:19px;font-weight:800;line-height:1.15">Open Circles</div></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:18px 16px 22px"><div style="width:100%;height:8px;background:#c91a09;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:8px;color:rgba(0,0,0,.72)">Pick</div><div style="font-size:19px;font-weight:800;line-height:1.15">Play-Based Immersion</div></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:18px 16px 22px"><div style="width:100%;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:8px;color:rgba(0,0,0,.72)">Pick</div><div style="font-size:19px;font-weight:800;line-height:1.15">Drum Circles</div></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:18px 16px 22px"><div style="width:100%;height:8px;background:#81007b;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:8px;color:rgba(0,0,0,.72)">Pick</div><div style="font-size:19px;font-weight:800;line-height:1.15">The Deep Dive</div></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:18px 16px 22px"><div style="width:100%;height:8px;background:#000;margin-bottom:14px"></div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px">Closes</div><div style="font-size:19px;font-weight:800;line-height:1.15">Open Coaching</div></div>
+    </div>
+    <p style="font-size:12px;letter-spacing:.04em;color:rgba(0,0,0,.72);margin:14px 0 0">Duration per module varies with group size, venue and the nature of the event — a ninety minute classroom version and a full day exist too.</p>
+  </section>
+
+  <section id="formats" style="border-bottom:2px solid #000">
+    <div style="padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px) 0">
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">The Full OpenSoch Experience</div>
+      <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,44px);max-width:16ch">Five formats. One room in motion.</h2>
+    </div>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+          <span style="font-size:12px;font-weight:800;letter-spacing:.14em">01</span>
+          <svg viewBox="0 0 8 8" style="width:36px;height:36px" aria-hidden="true"><g fill="#0055bf"><rect x="2" y="0" width="4" height="1"></rect><rect x="2" y="7" width="4" height="1"></rect><rect x="0" y="2" width="1" height="4"></rect><rect x="7" y="2" width="1" height="1"></rect><rect x="7" y="5" width="1" height="1"></rect><rect x="1" y="1" width="1" height="1"></rect><rect x="6" y="1" width="1" height="1"></rect><rect x="1" y="6" width="1" height="1"></rect><rect x="6" y="6" width="1" height="1"></rect></g></svg>
+        </div>
+        <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">Open Circles</h3>
+        <p style="font-size:18px;font-weight:600;color:#0055bf;margin:0 0 20px">Nobody sits down.</p>
+        <div style="height:clamp(190px,20vw,280px);filter:grayscale(1) contrast(1.08);border:2px solid #000">
+          <image-slot id="cm-circles" shape="rect" fit="cover" placeholder="Drop a photo of an Opening Circle"></image-slot>
+        </div>
+      </div>
+      <div style="display:grid;gap:20px;align-content:start">
+        <div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:6px">What usually happens</div><p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">You arrive alone, take a seat, and watch the hall fill up. You listen to talks and panels from people further along than you. You haven't spoken to anyone. Then someone announces it's time to network.</p></div>
+        <div style="border-top:2px solid #000;padding-top:18px"><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#0055bf;margin-bottom:6px">What we do</div><p style="font-size:16px;line-height:1.6;margin:0 0 10px;color:rgba(0,0,0,.72)">The OpenSoch team meets you at the door and you don't get a chair. You stand in a circle with everyone else who walked in. As it fills, we run rapid-fire questions — short, specific, impossible to hide behind. Everyone speaks in the first five minutes.</p><p style="font-size:16px;line-height:1.6;margin:0;font-weight:600">By the time the session starts, you've already met the room.</p></div>
+      </div>
+    </article>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+        <div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.14em">02</span>
+            <svg viewBox="0 0 8 8" style="width:36px;height:36px" aria-hidden="true"><rect x="0" y="0" width="3" height="3" fill="#81007b"></rect><rect x="5" y="0" width="3" height="3" fill="#0055bf"></rect><rect x="0" y="5" width="3" height="3" fill="#c91a09"></rect><rect x="5" y="5" width="3" height="3" fill="#f2cd37"></rect></svg>
+            <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;background:#c91a09;color:#fff;padding:3px 8px">Flagship</span>
+          </div>
+          <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">Play-Based Immersion</h3>
+          <p style="font-size:18px;font-weight:600;color:#c91a09;margin:0 0 12px">Same eight pieces. Sixty seconds. Go.</p>
+          <p style="font-size:13px;color:rgba(0,0,0,.72);margin:0">The one people describe to other people afterwards.</p>
+        </div>
+        <div>
+          <p style="font-size:16px;line-height:1.6;margin:0 0 12px;color:rgba(0,0,0,.72)">Everyone gets an identical set of eight LEGO pieces and one minute to build a butterfly. That's the whole first instruction. It works because it's absurd, because nobody can overthink it in sixty seconds, and because it reminds a room of adults that they used to be good at this.</p>
+          <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">Three people run it. A host opens, closes and moderates. A play expert facilitates the sequence. A coach connects each stage back to the work — a startup, a course project, a product team — in one or two lines, landing while the thing is still in your hands.</p>
+        </div>
+      </div>
+      <div style="margin-top:clamp(24px,3vw,44px)">
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:14px">The Opensoch Cycle</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(240px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
+          <div style="background:#81007b;color:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="font-size:11px;font-weight:700;margin-bottom:8px;opacity:.85">01</div><div style="font-size:26px;font-weight:900;line-height:1;margin-bottom:10px">Banao</div><p style="font-size:15px;line-height:1.55;margin:0">Same eight pieces. Build a butterfly. Sixty seconds.</p></div>
+          <div style="background:#0055bf;color:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="font-size:11px;font-weight:700;margin-bottom:8px;opacity:.85">02</div><div style="font-size:26px;font-weight:900;line-height:1;margin-bottom:10px">Dekho</div><p style="font-size:15px;line-height:1.55;margin:0">Stand up. Walk the room. You arrived with one idea and you leave with twenty-five.</p></div>
+          <div style="background:#c91a09;color:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="font-size:11px;font-weight:700;margin-bottom:8px;opacity:.85">03</div><div style="font-size:26px;font-weight:900;line-height:1;margin-bottom:10px">Badlo</div><p style="font-size:15px;line-height:1.55;margin:0">Your butterfly loses its wings. Here's more LEGO. Get it where it was going.</p></div>
+          <div style="background:#f2cd37;color:#000;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:20px 18px 24px"><div style="font-size:11px;font-weight:700;margin-bottom:8px">04</div><div style="font-size:26px;font-weight:900;line-height:1;margin-bottom:10px">Bolo</div><p style="font-size:15px;line-height:1.55;margin:0">Present your solution to the room. Ten seconds.</p></div>
+        </div>
+        <p style="font-size:15px;line-height:1.6;color:rgba(0,0,0,.72);margin:16px 0 0;max-width:70ch">Badlo is the long one, and the one everybody recognises from their own work. Bolo is ten seconds because ten seconds is survivable — most people have never pitched to a room of strangers, and this is the version where the stakes are a plastic butterfly.</p>
+      </div>
+    </article>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+          <span style="font-size:12px;font-weight:800;letter-spacing:.14em">03</span>
+          <svg viewBox="0 0 8 8" style="width:36px;height:36px" aria-hidden="true"><rect x="0" y="0" width="8" height="8" fill="#f2cd37"></rect><g fill="#000"><rect x="1" y="3" width="1" height="2"></rect><rect x="3" y="1" width="1" height="6"></rect><rect x="5" y="2" width="1" height="4"></rect><rect x="7" y="0" width="1" height="8"></rect></g></svg>
+        </div>
+        <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">Drum Circles &amp; Live Music</h3>
+        <p style="font-size:18px;font-weight:600;margin:0 0 20px"><span style="background:#f2cd37;padding:2px 8px">One community, one beat, no rehearsal.</span></p>
+        <div style="height:clamp(190px,20vw,280px);filter:grayscale(1) contrast(1.08);border:2px solid #000">
+          <image-slot id="cm-drums" shape="rect" fit="cover" placeholder="Drop a drum circle photo"></image-slot>
+        </div>
+      </div>
+      <div style="display:grid;gap:12px;align-content:start">
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">Everyone gets a drum. We guide the room into communal drumming — the oldest group technology there is, and one nobody can fake their way through.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">Staying on beat together requires trusting people you met an hour ago. People who arrived guarded stop being guarded, because you cannot hold a rhythm and hold yourself back at the same time. When it works, the room finds a flow state most people in it have never experienced.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;font-weight:600">We also arrange live music and original performances for events, festivals and campus nights.</p>
+      </div>
+    </article>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+          <span style="font-size:12px;font-weight:800;letter-spacing:.14em">04</span>
+          <svg viewBox="0 0 8 8" style="width:36px;height:36px" aria-hidden="true"><g fill="#81007b"><rect x="3" y="0" width="2" height="4"></rect><rect x="1" y="4" width="6" height="1"></rect><rect x="2" y="5" width="4" height="1"></rect><rect x="3" y="6" width="2" height="1"></rect></g></svg>
+        </div>
+        <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">The Deep Dive</h3>
+        <p style="font-size:18px;font-weight:600;color:#81007b;margin:0">Advice you leave having already applied.</p>
+      </div>
+      <div>
+        <p style="font-size:16px;line-height:1.6;margin:0 0 12px;color:rgba(0,0,0,.72)">Most sessions hand out good thinking that never gets used. This one doesn't let you leave with it unopened.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0 0 12px;color:rgba(0,0,0,.72)">We take one strong idea — a pricing framework, a model for improvising under pressure — and everyone runs their own venture, project or team through it in the room, with one of our experts facilitating. You rework something real while you're sitting there.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;font-weight:600">Sources rotate. The format remains the same and the learning intensifies.</p>
+      </div>
+    </article>
+
+    <article data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-top:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+          <span style="font-size:12px;font-weight:800;letter-spacing:.14em">05</span>
+          <svg viewBox="0 0 8 8" style="width:36px;height:36px" aria-hidden="true"><g fill="#000"><rect x="0" y="0" width="6" height="1"></rect><rect x="0" y="0" width="1" height="8"></rect><rect x="0" y="7" width="6" height="1"></rect></g></svg>
+        </div>
+        <h3 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 8px">Open Coaching</h3>
+        <p style="font-size:18px;font-weight:600;margin:0 0 20px">The part where nobody wants to leave.</p>
+        <div style="height:clamp(190px,20vw,280px);filter:grayscale(1) contrast(1.08);border:2px solid #000">
+          <image-slot id="cm-openhour" shape="rect" fit="cover" placeholder="Drop an Open Coaching photo"></image-slot>
+        </div>
+      </div>
+      <div style="display:grid;gap:12px;align-content:start">
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">The closing hour of the full OpenSoch Experience. Our coaches are in the room and available one to one — no booking, no queue system, just people you can walk up to.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">It's also the first unstructured time of the day, which is the point. By this stage the room has built together, drummed together and been heard by each other. Now they get to talk.</p>
+        <p style="font-size:16px;line-height:1.6;margin:0;font-weight:600">The conversations that start here are the ones that carry.</p>
+      </div>
+    </article>
+  </section>
+
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;background:#c91a09;color:#fff;padding:clamp(44px,6vw,96px) clamp(16px,4vw,56px);border-bottom:2px solid #000">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:20px">The whole point</div>
+    <p style="font-size:clamp(30px,5vw,68px);line-height:1.02;letter-spacing:-.03em;font-weight:900;margin:0;max-width:20ch">Strangers in,<br>community out.</p>
+  </section>
+
+  <section id="book" data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,60px);border-bottom:2px solid #000">
+    <div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">Booking</div>
+      <h2 style="font-size:clamp(28px,3.6vw,48px);line-height:1.03;margin:0 0 16px">Plan an Experience</h2>
+      <p style="font-size:17px;line-height:1.6;margin:0 0 14px;color:rgba(0,0,0,.72)">Available individually, or bundled as the full four hour OpenSoch Experience.</p>
+      <p style="font-size:17px;line-height:1.6;margin:0 0 24px;color:rgba(0,0,0,.72)">We work with schools, universities and their incubators, accelerators, and companies — and we host our own open sessions in coffee shops for anyone building something. Tell us the room and we'll tell you what fits it.</p>
+      <div style="border-top:2px solid #000;padding-top:18px">
+        <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:8px">Also from OpenSoch</div>
+        <div style="font-size:16px;line-height:1.55;color:rgba(0,0,0,.72)"><strong style="color:#000">Coaching partnerships.</strong> Programme &amp; curriculum design and embedded coaching for universities, incubators and companies. <a href="/coaching">See Coaching →</a></div>
+      </div>
+    </div>
+    <div style="border:2px solid #000;padding:clamp(18px,2.5vw,30px)">
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;gap:12px;padding:24px 0">
+          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#c91a09">Received</div>
+          <div style="font-size:24px;font-weight:800;line-height:1.15">We'll be in touch within two working days.</div>
+          <p style="font-size:15px;color:rgba(0,0,0,.72);margin:0">Meanwhile: think about what you want the room to be like at the end of the day.</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ onSubmit }}" style="display:grid;gap:14px">
+        <div class="field" style="display:grid;gap:6px"><label for="x-name" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Your name</label><input id="x-name" class="input" required="required" placeholder="Priya Nair" style="width:100%;box-sizing:border-box"></input></div>
+        <div class="field" style="display:grid;gap:6px"><label for="x-org" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Organisation</label><input id="x-org" class="input" required="required" placeholder="School, university, incubator, company" style="width:100%;box-sizing:border-box"></input></div>
+        <div class="field" style="display:grid;gap:6px"><label for="x-email" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Email</label><input id="x-email" class="input" type="email" required="required" placeholder="you@yourorganisation.org" style="width:100%;box-sizing:border-box"></input></div>
+        <div class="field" style="display:grid;gap:6px"><label for="x-modules" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">What are you after</label><select id="x-modules" class="input" style="width:100%;box-sizing:border-box"><option>The full four hour OpenSoch Experience</option><option>Open Circles</option><option>Play-Based Immersion</option><option>Drum Circles &amp; Live Music</option><option>The Deep Dive</option><option>Open Coaching</option><option>Not sure yet — help me pick</option></select></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px">
+          <div class="field" style="display:grid;gap:6px"><label for="x-size" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Group size</label><input id="x-size" class="input" placeholder="25 people" style="width:100%;box-sizing:border-box"></input></div>
+          <div class="field" style="display:grid;gap:6px"><label for="x-date" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Rough date</label><input id="x-date" class="input" placeholder="Late March" style="width:100%;box-sizing:border-box"></input></div>
+        </div>
+        <div class="field" style="display:grid;gap:6px"><label for="x-note" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">What's the event</label><textarea id="x-note" class="input" rows="3" placeholder="Orientation week, cohort kickoff, team offsite — and who's in the room." style="width:100%;box-sizing:border-box;resize:vertical"></textarea></div>
+        <button type="submit" class="btn btn-block" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#c91a09;color:#fff" style-hover="background:#000">Plan an experience →</button>
+        <p style="font-size:12px;color:rgba(0,0,0,.72);margin:0">We'll reply with options and what each module needs from your space.</p>
+      </form>
+      </sc-if>
+    </div>
+  </section>
+
+  <footer style="border-top:2px solid #000;padding:28px clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;align-items:start">
+    <div>
+      <img src="/assets/img/opensoch-pixel-logo.png" alt="OpenSoch" style="height:96px;width:auto;display:block;margin:-14px 0 8px -10px">
+      <p style="font-size:14px;line-height:1.55;margin:0;color:rgba(0,0,0,.72);max-width:32ch">Play based community experiences for founders and innovators.</p>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:12px">Pages</div>
+      <div style="display:grid;gap:8px;font-size:14px">
+        <a href="/experiences" style="color:#000;text-decoration:none">Experiences</a>
+        <a href="/coaching" style="color:#000;text-decoration:none">Coaching</a>
+        <a href="/backstory" style="color:#000;text-decoration:none">Backstory</a>
+        <a href="/playground" style="color:#000;text-decoration:none">Playground</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:12px">Get in touch</div>
+      <a href="/experiences#book" style="font-size:14px;color:#c91a09;text-decoration:none">Plan an experience →</a>
+      <div style="display:flex;gap:6px;margin-top:18px">
+        <span style="width:14px;height:14px;background:#81007b;display:block"></span>
+        <span style="width:14px;height:14px;background:#0055bf;display:block"></span>
+        <span style="width:14px;height:14px;background:#c91a09;display:block"></span>
+        <span style="width:14px;height:14px;background:#f2cd37;display:block"></span>
+      </div>
+      <div style="font-size:12px;color:rgba(0,0,0,.72);margin-top:18px">© 2026 OpenSoch. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { submitted: false };
+  componentDidMount() {
+    const reveal = (el) => { el.style.opacity = "1"; el.style.transform = "none"; };
+    const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
+    nodes.forEach((n) => { if (n.getBoundingClientRect().top < window.innerHeight) reveal(n); });
+    if (!("IntersectionObserver" in window)) { nodes.forEach(reveal); return; }
+    this._io = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) { reveal(e.target); this._io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    nodes.forEach((n) => this._io.observe(n));
+    this._fallback = setTimeout(() => nodes.forEach(reveal), 2500);
+  }
+  componentDidUpdate() {
+    document.querySelectorAll("[data-reveal]").forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) { el.style.opacity = "1"; el.style.transform = "none"; }
+    });
+  }
+  componentWillUnmount() { if (this._io) this._io.disconnect(); clearTimeout(this._fallback); }
+  renderVals() {
+    return {
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      onSubmit: (e) => { e.preventDefault(); this.setState({ submitted: true }); }
+    };
+  }
+}
+
+</script>
 </body>
 </html>
