@@ -12,6 +12,16 @@ python3 -m http.server
 
 then `http://localhost:8000`. It will open from `file://` too, but serve it if you can — the wordmark measuring tool assumes a served page.
 
+## Deploying
+
+Pure static — no build step, no package.json, no server. Point any static host at the repository root.
+
+**Vercel:** import the repo, framework preset **Other**, no build command, output directory **`.`** (the root). The branch this lives on is the repository's default, so it deploys as production with nothing to configure.
+
+`vercel.json` sets `trailingSlash: false` (so the canonical URLs are `/experiences`, matching the links) and marks `vendor/lib`, `vendor/_ds` and `assets/img` immutable for a year. That last part matters: `vendor/lib/babel.min.js` is 3.1MB, and without it every page view re-downloads it.
+
+**Anything else** — Netlify, Cloudflare Pages, S3, GitHub Pages at a domain root — works the same way. The one thing to avoid is serving from a *subdirectory* (a GitHub project page at `/repo/`): every internal path is absolute, so they would all break.
+
 ## Read `CLAUDE.md` first
 
 `CLAUDE.md` is the spec and it is current. It carries the decisions and, more usefully, the things that were tried and rejected — so it saves you rediscovering them. The two sections that matter most are **3** (tile map and wordmark) and **8** (region states).
