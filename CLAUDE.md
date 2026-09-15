@@ -180,6 +180,22 @@ On entry, simultaneously:
 
 ---
 
+## 8a. Mobile — the brain stacks
+
+Touch has no hover, so the desktop model — cursor enters the box, the clusters spread, one region lights — has nothing to hook into. On touch the brain **stacks** instead.
+
+**Gate:** `(hover: none) and (pointer: coarse)`, which is the condition that actually breaks the desktop interaction, rather than a width breakpoint. A narrow desktop window keeps the hover model. `?mobile=1` forces the stack on a desktop for review.
+
+**The sequence.** Beats 1 to 3 run unchanged — preloader, logo, colour brain, whole. Then, because nothing is going to hover, the split runs on its own: after ~800ms the four quadrants travel into a vertical stack, one row each, in nav order — Experiences, Coaching, Backstory, Playground. Tapping the whole brain during that beat splits it immediately.
+
+**The layout.** Each region is moved by a transform whose origin is its own top-left tile, so scale and translate compose predictably and the box's corner lands exactly where the row wants it. **All four share one scale** — they are pieces of a single brain, and a tile has to be the same size in every row or they stop reading as one artwork. The labels share a left edge set by the widest piece. Geometry is viewport-derived and recomputed on resize and orientation change.
+
+**The row is the link.** The label anchor covers the full row, artwork included, so there is no dead space between a piece and its text. Per-tile hit testing is off here: a row is a discrete target, which is both more reliable under a thumb than a pixel-accurate silhouette and far cheaper than re-testing every frame. Rows are 76px tall in landscape and 128px or more in portrait, against a 44px minimum.
+
+**What changes and what doesn't.** The tiles still flip 180 degrees as they travel — that is still the split. The diagonal spread, the glow, the dim, the neutral state and the live region are all desktop-only; in a stack nothing is singled out, so every region sits at full colour and a pulse fires on a random one every ~820ms. The dive is unchanged except that it grows out of the tapped piece rather than the tap point, which on a row lands in the label well away from the artwork.
+
+---
+
 ## 8. Screen 4 — Region states
 
 Region detection is **per-tile**, not per-quadrant-box.
@@ -292,7 +308,7 @@ The transition layer styles nothing about the page itself. It paints over whatev
 
 ## 10. Open items
 
-1. **Touch.** There is no hover on mobile. The entire interaction model depends on it. Needs a decision before this ships — not before it's built, but before it's public.
+1. **Landscape phones get a short stack.** Four rows in ~360px of height leaves each piece about 56px tall. Legible and tappable, but the artwork is small. A 2x2 grid would suit landscape better if it turns out anyone uses it that way.
 2. **Label placement.** Floating near the live region, or fixed toward its corner outside the brain.
 3. **The 17 missing tiles.** Measured, listed in section 3, not applied. Applying them and re-fitting should finally put the wordmark at its official proportion.
 4. **Babel still transpiles in the browser.** The runtime is local now (see below), but `vendor/lib/babel.min.js` is 3.1MB and each section page's `data-dc-script` is compiled on every view. Precompiling those scripts at build time would drop Babel from the page entirely. A speed matter now, not a reliability one.

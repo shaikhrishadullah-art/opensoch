@@ -130,17 +130,18 @@
   #stage.ready .tile.on{
     transition:transform var(--flip) cubic-bezier(.22,.61,.36,1);
   }
-  #stage.ready:is(:hover,.open) .tile.on{ transform:rotateY(180deg); }
+  #stage.ready:is(:hover,.open):not(.mobile) .tile.on,
+  #stage.ready.stacked .tile.on{ transform:rotateY(180deg); }
 
   /* clusters open outward on their own diagonals */
-  #stage.ready:is(:hover,.open) .region--tl,
-  #stage.ready:is(:hover,.open) .glowreg--tl{ transform:translate(calc(var(--spread)*-1), calc(var(--spread)*-1)) }
-  #stage.ready:is(:hover,.open) .region--tr,
-  #stage.ready:is(:hover,.open) .glowreg--tr{ transform:translate(var(--spread),           calc(var(--spread)*-1)) }
-  #stage.ready:is(:hover,.open) .region--bl,
-  #stage.ready:is(:hover,.open) .glowreg--bl{ transform:translate(calc(var(--spread)*-1), var(--spread)) }
-  #stage.ready:is(:hover,.open) .region--br,
-  #stage.ready:is(:hover,.open) .glowreg--br{ transform:translate(var(--spread),           var(--spread)) }
+  #stage.ready:is(:hover,.open):not(.mobile) .region--tl,
+  #stage.ready:is(:hover,.open):not(.mobile) .glowreg--tl{ transform:translate(calc(var(--spread)*-1), calc(var(--spread)*-1)) }
+  #stage.ready:is(:hover,.open):not(.mobile) .region--tr,
+  #stage.ready:is(:hover,.open):not(.mobile) .glowreg--tr{ transform:translate(var(--spread),           calc(var(--spread)*-1)) }
+  #stage.ready:is(:hover,.open):not(.mobile) .region--bl,
+  #stage.ready:is(:hover,.open):not(.mobile) .glowreg--bl{ transform:translate(calc(var(--spread)*-1), var(--spread)) }
+  #stage.ready:is(:hover,.open):not(.mobile) .region--br,
+  #stage.ready:is(:hover,.open):not(.mobile) .glowreg--br{ transform:translate(var(--spread),           var(--spread)) }
 
   /* ---- SCREEN 4: per-region states ---- */
   /* neutral: cursor inside the box but on no tile. all four equal, no glow. */
@@ -213,15 +214,45 @@
   .label--bl{ left:0;  top:calc(100% + var(--t)*.45) }
   .label--br{ right:0; top:calc(100% + var(--t)*.45) }
   /* labels ride the same diagonal the clusters open along */
-  #stage.ready:is(:hover,.open) .label--tl{ translate:calc(var(--spread)*-1) calc(var(--spread)*-1) }
-  #stage.ready:is(:hover,.open) .label--tr{ translate:var(--spread)           calc(var(--spread)*-1) }
-  #stage.ready:is(:hover,.open) .label--bl{ translate:calc(var(--spread)*-1) var(--spread) }
-  #stage.ready:is(:hover,.open) .label--br{ translate:var(--spread)           var(--spread) }
+  #stage.ready:is(:hover,.open):not(.mobile) .label--tl{ translate:calc(var(--spread)*-1) calc(var(--spread)*-1) }
+  #stage.ready:is(:hover,.open):not(.mobile) .label--tr{ translate:var(--spread)           calc(var(--spread)*-1) }
+  #stage.ready:is(:hover,.open):not(.mobile) .label--bl{ translate:calc(var(--spread)*-1) var(--spread) }
+  #stage.ready:is(:hover,.open):not(.mobile) .label--br{ translate:var(--spread)           var(--spread) }
   #stage.ready.live .label.is-live{ opacity:1 }
   .label{ text-decoration:none }
   /* a live region is a link target */
   #stage.ready.live{ cursor:pointer }
   .label:focus-visible{ opacity:1; outline:1px solid currentColor; outline-offset:.4em }
+
+  /* ---- MOBILE: the brain stacks instead of spreading ----
+     There is no hover on touch, so the split cannot wait for a cursor: once
+     the colour state settles the four quadrants travel into a vertical stack,
+     one row each, and the whole row is the link.
+
+     Per-tile hit testing is off here. A row is a discrete target, which is
+     both more reliable under a thumb than a pixel-accurate silhouette and far
+     cheaper than re-testing every frame. The label anchor covers the full row
+     - artwork included - so there is no dead space between the piece and its
+     text. Geometry is set inline from JS because it depends on the viewport;
+     only the transitions and type live here. */
+  #stage.mobile #brain.alive{ animation:none }      /* the stack is placed exactly */
+  #stage.mobile .glowreg{ display:none }            /* nothing is "live" in a stack */
+  #stage.mobile .region{
+    transition:transform 620ms cubic-bezier(.22,.61,.36,1);
+  }
+  #stage.mobile .label{
+    left:auto; right:auto; top:auto; bottom:auto;
+    translate:none !important;
+    display:flex; align-items:center;
+    font-size:clamp(15px,4.6vw,22px);
+    letter-spacing:.14em;
+    opacity:0; pointer-events:none;
+    transition:opacity 340ms ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #stage.mobile.stacked .label{ opacity:1; pointer-events:auto }
+  /* the row acknowledges the tap before the dive takes over */
+  #stage.mobile.stacked .label:active{ opacity:.55; transition:opacity 60ms }
 
   /* wordmark: black letterforms over the tiles. hidden at the flip midpoint.
      Drawn as vector rather than a raster overlay - the letterforms are finer
@@ -361,6 +392,13 @@ for(const [c,r,reg] of TILES){
 
 /* where each region goes, and the colour field the navigation happens inside */
 const ROUTES={tl:'/experiences', tr:'/coaching', bl:'/backstory', br:'/playground'};
+
+/* Touch has no hover, so the whole desktop model - cursor enters the box,
+   regions spread, one lights - has nothing to hook into. On these devices the
+   brain stacks instead. ?mobile=1 forces it on a desktop for review. */
+const MOBILE = new URLSearchParams(location.search).has('mobile')
+  || matchMedia('(hover: none) and (pointer: coarse)').matches;
+if(MOBILE) stage.classList.add('mobile');
 const curtain=document.getElementById('curtain');
 const DIVE=parseFloat(getComputedStyle(document.documentElement)
   .getPropertyValue('--dive'))||620;
@@ -393,7 +431,11 @@ function showLogo(){                 // beat 2: the assembled logo
 function toColour(){                 // beat 3: dissolve into the region colours
   stage.classList.add('coloured');
   // hover is inert until the reveal has finished
-  timers.push(setTimeout(()=>stage.classList.add('ready'), REVEAL));
+  timers.push(setTimeout(()=>{
+    stage.classList.add('ready');
+    // on touch nothing is going to hover, so the split runs on its own
+    if(MOBILE) stackTimer=setTimeout(goStacked, STACK_HOLD);
+  }, REVEAL));
 }
 
 function skip(){                     // any input: straight to the rest state
@@ -402,7 +444,10 @@ function skip(){                     // any input: straight to the rest state
   stage.classList.add('snap');
   showLogo();
   stage.classList.add('coloured','ready');
-  requestAnimationFrame(()=>requestAnimationFrame(()=>stage.classList.remove('snap')));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    stage.classList.remove('snap');
+    if(MOBILE) stackTimer=setTimeout(goStacked, STACK_HOLD);
+  }));
 }
 
 function run(){
@@ -451,6 +496,16 @@ if(from && ROUTES[from]){
    never both be inside their own region (the offsets always push the
    candidate the wrong side of the centre cut), so the hit is unambiguous. */
 const SIGN={tl:[-1,-1], tr:[1,-1], bl:[-1,1], br:[1,1]};
+
+/* each region's occupied box, in tiles - read off the map, not assumed.
+   Built from `cells`, which exists by now; byRegion is declared further down. */
+const BOX={};
+for(const reg of REGS) BOX[reg]={c0:99,r0:99,c1:-1,r1:-1};
+for(const {reg,c,r} of cells.values()){
+  const b=BOX[reg];
+  if(c<b.c0)b.c0=c; if(c>b.c1)b.c1=c; if(r<b.r0)b.r0=r; if(r>b.r1)b.r1=r;
+}
+for(const reg of REGS){ const b=BOX[reg]; b.w=b.c1-b.c0+1; b.h=b.r1-b.r0+1; }
 
 function tileSize(){ return stage.getBoundingClientRect().width/COLS; }
 
@@ -531,7 +586,7 @@ function firePath(reg){
   if(path.length<4) return;
   path.forEach((cell,i)=>{
     pulseTimers.push(setTimeout(()=>{
-      if(live!==reg) return;
+      if(live!==reg && !stage.classList.contains('stacked')) return;
       const el=cell.el;
       el.classList.remove('fire');
       void el.offsetWidth;      // restart the flash if this tile is still lit
@@ -556,6 +611,59 @@ function startPulses(reg){
     if(Math.random()<0.5) setTimeout(()=>{ if(live===reg) firePath(reg); }, 180);
   }, 620);
 }
+
+/* ---------- mobile: lay the four pieces out as a stack ----------
+   Each region is moved by a transform whose origin is its own top-left tile,
+   so scale and translate compose predictably: the box's corner lands exactly
+   where the row wants it. Positions are viewport-derived and recomputed on
+   resize and orientation change. */
+const STACK_HOLD=800;
+let stackTimer=null, ambient=null;
+const PIECE={};                     // each piece's rect on screen, for the dive
+
+function layoutStacked(){
+  if(!MOBILE) return;
+  const sr=stage.getBoundingClientRect();
+  const t=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--t'));
+  const vw=innerWidth, vh=innerHeight;
+  const padX=14, padTop=8, footer=48;
+  const rowH=(vh-padTop-footer)/4;
+  /* One scale for all four. They are pieces of a single brain, so a tile has
+     to be the same size in every row or they stop reading as one artwork. */
+  const s=Math.min(...REGS.map(reg=>{
+    const b=BOX[reg];
+    return Math.min(rowH*0.74/(b.h*t), vw*0.38/(b.w*t));
+  }));
+  /* labels share a left edge, set by the widest piece, so the text lines up */
+  const textX=padX+Math.max(...REGS.map(reg=>BOX[reg].w))*t*s+18;
+  REGS.forEach((reg,i)=>{
+    const b=BOX[reg];
+    const pw=b.w*t*s, ph=b.h*t*s;
+    const rowTop=padTop+i*rowH;
+    const ox=b.c0*t, oy=b.r0*t;                       // the box corner, unscaled
+    const vx=padX, vy=rowTop+(rowH-ph)/2;             // where that corner goes
+    const el=regions[reg];
+    el.style.transformOrigin=`${ox}px ${oy}px`;
+    el.style.transform=
+      `translate(${(vx-sr.left)-ox}px, ${(vy-sr.top)-oy}px) scale(${s.toFixed(4)})`;
+    const lab=labels[reg];                            // the row itself is the link
+    lab.style.left=`${padX-sr.left}px`;
+    lab.style.top=`${rowTop-sr.top}px`;
+    lab.style.width=`${vw-padX*2}px`;
+    lab.style.height=`${rowH}px`;
+    lab.style.paddingLeft=`${textX-padX}px`;
+    PIECE[reg]={x:vx, y:vy, w:pw, h:ph};
+  });
+}
+
+function goStacked(){
+  if(!MOBILE || stage.classList.contains('stacked')) return;
+  clearTimeout(stackTimer);
+  layoutStacked();
+  stage.classList.add('stacked');
+  if(!reduce && !ambient) ambient=setInterval(()=>firePath(REGS[Math.random()*4|0]), 820);
+}
+addEventListener('resize', ()=>{ if(stage.classList.contains('stacked')) layoutStacked(); });
 
 /* ---------- state ---------- */
 let live=null, isOpen=false, px=0, py=0, raf=null, diving=false;
@@ -598,12 +706,14 @@ function close(){
   stage.classList.remove('open','neutral','live');
 }
 
-stage.addEventListener('pointermove', e=>{
-  px=e.clientX; py=e.clientY;
-  if(!isOpen) open(); else apply(hitTest(px,py));
-});
-stage.addEventListener('pointerenter', e=>{ px=e.clientX; py=e.clientY; open(); });
-stage.addEventListener('pointerleave', close);
+if(!MOBILE){
+  stage.addEventListener('pointermove', e=>{
+    px=e.clientX; py=e.clientY;
+    if(!isOpen) open(); else apply(hitTest(px,py));
+  });
+  stage.addEventListener('pointerenter', e=>{ px=e.clientX; py=e.clientY; open(); });
+  stage.addEventListener('pointerleave', close);
+}
 
 /* each region is its own link. Detection is the same per-tile test the hover
    uses, so the clickable area is the region's real shape - clicking a notch
@@ -614,6 +724,9 @@ stage.addEventListener('pointerleave', close);
    colour, so the document swap is never seen. */
 function dive(reg, cx, cy){
   if(diving) return; diving=true;
+  clearInterval(ambient); ambient=null;
+  // the veil keys off .is-live; on touch nothing set it, so set it here
+  for(const k of REGS) regions[k].classList.toggle('is-live', k===reg);
   // freeze the live region where it is: the zoom invalidates the hit test and
   // pointer-events:none would otherwise drop :hover and close the whole state
   if(raf) cancelAnimationFrame(raf);
@@ -637,10 +750,18 @@ function dive(reg, cx, cy){
 stage.addEventListener('click', e=>{
   if(!stage.classList.contains('ready')) return;
   const viaLabel=e.target.closest('.label');
+  if(MOBILE && !viaLabel){        // tapping the brain before it splits just splits it
+    goStacked();
+    return;
+  }
   const reg = viaLabel ? viaLabel.dataset.reg : hitTest(e.clientX, e.clientY);
   if(!reg) return;
   e.preventDefault();                        // the dive does the navigating
-  dive(reg, e.clientX, e.clientY);
+  // on a stacked row the tap lands on the label, well away from the artwork;
+  // grow the zoom out of the piece instead so it comes from the brain
+  const p=MOBILE && PIECE[reg];
+  if(p) dive(reg, p.x+p.w/2, p.y+p.h/2);
+  else  dive(reg, e.clientX, e.clientY);
 });
 
 /* keyboard: the four regions are tabbable and light their own region */

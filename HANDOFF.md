@@ -51,6 +51,7 @@ Screens 1–4 of the spec, all on the home page:
 2. **Rest** — the four colours, whole and joined, tile grid visible, breathing slowly. Footer. No wordmark, no labels.
 3. **Hover** — every tile flips 180°, the four clusters slide apart on their diagonals, the label appears. Colour does not change; it is already there.
 4. **Region states** — per-tile region detection, live region glows with neuron pulses, other three dim. Neutral state when the cursor is inside the box but not on a tile.
+5. **Mobile** — on touch the brain stacks into four labelled rows instead of spreading; the row is the link. See `CLAUDE.md` section 8a. Add `?mobile=1` to any desktop browser to see it.
 
 Clicking any tile dives into that region — the stage scales up out of the clicked tile, the other three go black, and the section opens back out of the same colour, breaking into big tiles that clear from the point that was clicked. The nav logo returns to the closed colour brain without replaying the load sequence.
 
@@ -59,7 +60,7 @@ Keyboard works: the four labels are tabbable links that light their own region.
 ## What is not built
 
 - **The 17 missing tiles.** The official logo has 259 tiles; `tilemap.json` has 242, and the 17 it lacks are the reason the wordmark cannot sit at full size. Measured and listed in `CLAUDE.md` section 3, not applied.
-- **Touch.** There is no hover on mobile and the whole interaction model depends on it. This is open item 1 in the spec and it needs a decision before launch.
+- **Landscape phones.** The stack works there (76px rows) but the pieces get small. A 2x2 grid would suit landscape better.
 - **The glitch transition.** The grid currently appears and disappears on a clean cut. The brief allows it to fade in glitchily between hovers; that was left until the logo itself is settled.
 
 ## Adding a real page
