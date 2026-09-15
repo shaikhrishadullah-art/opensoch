@@ -31,7 +31,7 @@ Pure static — no build step, no package.json, no server. Point any static host
 | File | |
 |---|---|
 | `index.html` | The brain: load sequence, colour rest state, hover, dive. One file. |
-| `experiences/` `coaching/` `backstory/` `playground/` | The four section pages, built from the Claude Design artboards. |
+| `experiences/` `coaching/` `backstory/` `playground/` | The four section pages, built from the Claude Design artboards. `playground/` was later rebuilt from a copy brief as the Coffee Shop Cohort — same design system, no blog. |
 | `assets/palette.css` | The four colours. Tokens only — no reset, so it cannot collide with the artboards' design system. The only place the hexes should appear. |
 | `assets/img/` | Artwork from the design handoff, including the official pixel logo. |
 | `vendor/` | `support.js`, `image-slot.js`, `_ds/` — the design system runtime. **Do not edit.** |
@@ -58,7 +58,6 @@ Keyboard works: the four labels are tabbable links that light their own region.
 
 ## What is not built
 
-- **Playground's posts have no URLs.** They are client-side only — a `POSTS` array and an `openId` state that swaps the index for a detail view. Fine for now; it means a post cannot be linked to or shared.
 - **The 17 missing tiles.** The official logo has 259 tiles; `tilemap.json` has 242, and the 17 it lacks are the reason the wordmark cannot sit at full size. Measured and listed in `CLAUDE.md` section 3, not applied.
 - **Touch.** There is no hover on mobile and the whole interaction model depends on it. This is open item 1 in the spec and it needs a decision before launch.
 - **The glitch transition.** The grid currently appears and disappears on a clean cut. The brief allows it to fade in glitchily between hovers; that was left until the logo itself is settled.

@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Playground — Opensoch</title>
+<title>Playground — OpenSoch</title>
+<!-- TODO: confirm the LinkedIn company URL in the tail section; the brief supplied a placeholder link. -->
 <link rel="stylesheet" href="/assets/palette.css">
 <link rel="stylesheet" href="/assets/transition.css">
 <script src="/assets/local-runtime.js"></script>
@@ -25,6 +26,8 @@
   a:hover { color: #000; }
   :focus-visible { outline: 2px solid #c91a09; outline-offset: 2px; }
   ::selection { background: #f2cd37; color: #000; }
+  input, select, textarea { font-family: "Archivo", system-ui, sans-serif; }
+  .input { border-color: #000 !important; background: #fff !important; color: #000 !important; }
 </style>
 </helmet>
 
@@ -39,146 +42,88 @@
       <a href="/coaching" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Coaching</a>
       <a href="/backstory" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#000;text-decoration:none">Backstory</a>
       <a href="/playground" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#000;text-decoration:none;border-bottom:2px solid #c91a09;padding-bottom:2px">Playground</a>
-      <a href="/experiences#book" class="btn" style="justify-content:flex-start;background:#c91a09;color:#fff;font-size:12px;letter-spacing:.06em;white-space:nowrap" style-hover="background:#000">Plan an experience →</a>
+      <a href="#register" class="btn" style="justify-content:flex-start;background:#c91a09;color:#fff;font-size:12px;letter-spacing:.06em;white-space:nowrap" style-hover="background:#000">Register your interest →</a>
     </nav>
   </header>
 
-  <sc-if value="{{ showIndex }}" hint-placeholder-val="{{ true }}">
-  <div>
-    <section style="border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:clamp(20px,3vw,36px);flex-wrap:wrap">
-        <span style="width:10px;height:10px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;display:block"></span>
-        <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700">Playground · OpenSoch initiatives &amp; collaborative experiments</span>
+  <section style="border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:clamp(20px,3vw,36px);flex-wrap:wrap">
+      <span style="width:10px;height:10px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;display:block"></span>
+      <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700">Playground · The Coffee Shop Cohort · Now forming</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:end">
+      <h1 style="font-size:clamp(38px,6.2vw,76px);line-height:1.02;letter-spacing:-.03em;margin:0;max-width:16ch">No building.<br>No badge.<br>No demo day.</h1>
+      <div style="display:grid;gap:26px;justify-items:start">
+        <p style="font-size:clamp(16px,1.5vw,20px);line-height:1.5;max-width:48ch;margin:0;color:rgba(0,0,0,.72)">Five to ten founders. One table. One full year. We're putting together a small cohort of people building something real, and running founder development the way we think it should be run — with our own money, our own coaching, and no programme calendar telling anyone when to be finished.</p>
+        <a href="#register" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#c91a09;color:#fff;white-space:nowrap" style-hover="background:#000">Register your interest →</a>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:end">
-        <h1 style="font-size:clamp(38px,6.2vw,76px);line-height:1.02;letter-spacing:-.03em;margin:0;max-width:13ch">The games we play.</h1>
-        <p style="font-size:clamp(16px,1.5vw,20px);line-height:1.5;max-width:48ch;margin:0;color:rgba(0,0,0,.72)">What we've just run, what's in the pipeline, and the half-formed ideas we're still arguing about. Coverage from recent sessions, formats in testing, and the bets we're placing on other people building interesting things.</p>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <section style="border-bottom:2px solid #000;padding:clamp(28px,4vw,52px) clamp(16px,4vw,56px)">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700">Pinned</div>
-        <span style="font-size:13px;color:rgba(0,0,0,.72)">The two we'd point you at first.</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));grid-auto-rows:minmax(300px,auto);gap:0;background:#fff;border:2px solid #000;overflow:hidden">
-        <sc-for list="{{ pinned }}" as="post" hint-placeholder-count="2">
-          <div onClick="{{ post.open }}" style="position:relative;overflow:hidden;cursor:pointer;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;background:#fff;display:flex;flex-direction:column">
-            <sc-if value="{{ post.hasVideoFile }}" hint-placeholder-val="{{ false }}">
-              <video src="{{ post.video }}" muted="{{ true }}" loop="{{ true }}" autoPlay="{{ true }}" playsInline="{{ true }}" style="width:100%;height:200px;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08)"></video>
-            </sc-if>
-            <sc-if value="{{ post.noVideoFile }}" hint-placeholder-val="{{ true }}">
-              <div style="height:200px;filter:grayscale(1) contrast(1.08)">
-                <image-slot id="{{ post.pinSlot }}" shape="rect" fit="cover" placeholder="Drop an image"></image-slot>
-              </div>
-            </sc-if>
-            <div style="border-top:2px solid #000;padding:18px 18px 22px;display:flex;flex-direction:column;gap:10px;flex:1">
-              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-                <span style="width:24px;height:8px;display:block;background:{{ post.color }}"></span>
-                <span style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:rgba(0,0,0,.72);white-space:nowrap">{{ post.kind }} · {{ post.date }}</span>
-                <span style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;background:#c91a09;color:#fff;padding:3px 7px;white-space:nowrap">Pinned</span>
-              </div>
-              <div style="font-size:clamp(22px,2.4vw,30px);font-weight:900;line-height:1.05">{{ post.title }}</div>
-              <p style="font-size:15px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">{{ post.summary }}</p>
-              <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#c91a09;margin-top:auto">Read the post →</span>
-            </div>
-          </div>
-        </sc-for>
-      </div>
-    </section>
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">Why this exists</div>
+    <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,36px);max-width:20ch">The programme ends in twelve weeks. The company doesn't.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(280px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden;margin-bottom:clamp(24px,3.5vw,36px)">
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#000;margin-bottom:14px"></div><div style="font-size:20px;font-weight:800;line-height:1.2;margin-bottom:10px">What usually happens</div><p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">You get in. There's a kickoff, a curriculum, a mentor list and a countdown. You spend three months producing the artefacts the programme needs — the deck, the metrics slide, the demo day rehearsal — and you get good at presenting a company rather than building one. Then it ends, everyone claps, and you're back where you started with a better pitch.</p></div>
+      <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;margin-bottom:14px"></div><div style="font-size:20px;font-weight:800;line-height:1.2;margin-bottom:10px">What we do</div><p style="font-size:16px;line-height:1.6;margin:0;color:rgba(0,0,0,.72)">We take five to ten founders and stay with them. No cohort calendar, no graduation. The work is play-based and the stakes are deliberately low, because that's the only condition under which people try things that might not work. Then we help with the parts that actually decide the outcome: raising, and finding the exit.</p></div>
+    </div>
+    <p style="font-size:clamp(18px,2vw,24px);line-height:1.35;font-weight:800;margin:0;max-width:34ch">We're not trying to run a bigger programme than anyone else. <span style="background:#f2cd37;padding:2px 8px">We're trying to get one or two companies somewhere real.</span></p>
+  </section>
 
-    <section style="border-bottom:2px solid #000;padding:clamp(28px,4vw,52px) clamp(16px,4vw,56px)">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700">Updates</div>
-        <span style="font-size:13px;color:rgba(0,0,0,.72)">Event coverage, formats in testing, and what we're backing.</span>
-      </div>
-      <div style="border-top:2px solid #000">
-        <sc-for list="{{ updates }}" as="post" hint-placeholder-count="6">
-          <div onClick="{{ post.open }}" style="border-bottom:2px solid #000;padding:20px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(12px,2vw,40px);align-items:start;cursor:pointer" style-hover="background:#f6f6f6">
-            <div style="display:flex;gap:16px;align-items:flex-start">
-              <span style="width:10px;height:34px;display:block;flex:none;background:{{ post.color }}"></span>
-              <div>
-                <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:rgba(0,0,0,.72);margin-bottom:6px">{{ post.kind }} · {{ post.date }}</div>
-                <div style="font-size:clamp(20px,2.1vw,26px);font-weight:900;line-height:1.08">{{ post.title }}</div>
-              </div>
-            </div>
-            <div style="display:grid;gap:10px">
-              <p style="font-size:16px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)">{{ post.summary }}</p>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-                <span style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;border:2px solid #000;padding:4px 9px">{{ post.status }}</span>
-                <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#c91a09">Read →</span>
-              </div>
-            </div>
-          </div>
-        </sc-for>
-      </div>
-    </section>
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">The shape of it</div>
+    <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,36px);max-width:18ch">Small, on purpose.</h2>
+    <div style="border:2px solid #000;background:#fff"><div style="display:flex;gap:16px;align-items:flex-start;padding:20px clamp(16px,2.2vw,26px);border-bottom:2px solid #000;"><span style="width:14px;height:14px;background:#81007b;display:block;flex:none;margin-top:5px"></span><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">Five to ten founders.</strong> Not a batch. A table you can remember everyone at.</p></div><div style="display:flex;gap:16px;align-items:flex-start;padding:20px clamp(16px,2.2vw,26px);border-bottom:2px solid #000;"><span style="width:14px;height:14px;background:#0055bf;display:block;flex:none;margin-top:5px"></span><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">Play-based.</strong> The same methods we run for incubators and universities, except you get them forever instead of an afternoon.</p></div><div style="display:flex;gap:16px;align-items:flex-start;padding:20px clamp(16px,2.2vw,26px);border-bottom:2px solid #000;"><span style="width:14px;height:14px;background:#c91a09;display:block;flex:none;margin-top:5px"></span><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">Low stakes, real skills.</strong> Creative insight is a muscle. Nothing in your education was designed to build it. This is.</p></div><div style="display:flex;gap:16px;align-items:flex-start;padding:20px clamp(16px,2.2vw,26px);border-bottom:2px solid #000;"><span style="width:14px;height:14px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;display:block;flex:none;margin-top:5px"></span><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">We stay for the raise.</strong> Fundraising and exit are the two things every programme wishes you well on and then leaves you to. They're the two we're in for.</p></div><div style="display:flex;gap:16px;align-items:flex-start;padding:20px clamp(16px,2.2vw,26px);"><span style="width:14px;height:14px;background:#000;display:block;flex:none;margin-top:5px"></span><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">No demo day.</strong> Nothing here is built to be presented at.</p></div></div>
+    <p style="font-size:17px;line-height:1.6;margin:clamp(22px,3vw,30px) 0 0;max-width:60ch;font-weight:600">A coffee shop, because we'd rather spend the money on the founders than on a floor of an office nobody needs.</p>
+  </section>
 
-    <section style="background:#f2cd37;color:#000;padding:clamp(40px,5.5vw,88px) clamp(16px,4vw,56px);border-bottom:2px solid #000">
-      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">Come to the playground</div>
-      <p style="font-size:clamp(26px,4.2vw,58px);line-height:1.04;letter-spacing:-.03em;font-weight:900;margin:0 0 24px;max-width:20ch">Join our Coffee Shop Cohort and let's play!</p>
-      <a href="/experiences#book" class="btn" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#000;color:#fff;white-space:nowrap" style-hover="background:#c91a09">Join →</a>
-    </section>
-  </div>
-  </sc-if>
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px)">
+    <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">Fit</div>
+    <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.05;margin:0 0 clamp(24px,4vw,36px);max-width:18ch">You've started. That's the bar.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(240px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden"><div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#81007b;margin-bottom:14px"></div><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">You've built something.</strong> Not a deck — a thing, however rough, that exists outside your head.</p></div><div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#0055bf;margin-bottom:14px"></div><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">You're past the idea stage</strong> and into the part where it's harder than you expected.</p></div><div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#c91a09;margin-bottom:14px"></div><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">You're willing to be coached,</strong> which mostly means being willing to be wrong in front of people.</p></div><div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:22px 18px 26px"><div style="width:100%;height:8px;background:#f2cd37;border:1px solid #000;box-sizing:border-box;margin-bottom:14px"></div><p style="font-size:17px;line-height:1.55;margin:0;color:rgba(0,0,0,.72)"><strong style="color:#000;font-weight:800">You can get to a coffee shop</strong> and sit in it.</p></div></div>
+    <p style="font-size:17px;line-height:1.6;margin:clamp(22px,3vw,30px) 0 0;max-width:60ch;color:rgba(0,0,0,.72)">If you're earlier than that, come to an open session instead — <a href="/experiences" style="color:#c91a09;font-weight:600">we run those too</a>.</p>
+  </section>
 
-  <sc-if value="{{ showDetail }}" hint-placeholder-val="{{ false }}">
-  <div>
-    <section style="border-bottom:2px solid #000;padding:clamp(20px,3vw,36px) clamp(16px,4vw,56px) clamp(36px,5vw,72px)">
-      <button type="button" onClick="{{ back }}" class="btn" style="justify-content:flex-start;border:2px solid #000;background:#fff;color:#000;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:clamp(20px,3vw,36px)" style-hover="background:#000;color:#fff">← All of the playground</button>
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-        <span style="width:36px;height:8px;display:block;background:{{ open.color }}"></span>
-        <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700">{{ open.kind }} · {{ open.date }} · {{ open.status }}</span>
-      </div>
-      <h1 style="font-size:clamp(34px,5.4vw,66px);line-height:1.03;letter-spacing:-.03em;margin:0 0 20px;max-width:16ch">{{ open.title }}</h1>
-      <p style="font-size:clamp(17px,1.7vw,22px);line-height:1.45;font-weight:600;max-width:46ch;margin:0">{{ open.tagline }}</p>
-    </section>
+  <section style="border-bottom:2px solid #000;padding:clamp(18px,2.6vw,30px) clamp(16px,4vw,56px)">
+    <p style="font-size:15px;line-height:1.6;margin:0;color:rgba(0,0,0,.72);max-width:80ch">We run play-based experiences and coaching for incubators, universities and companies across Pakistan — most recently for <strong style="color:#000;font-weight:700">WISE Lab</strong>, the national incubation programme for women founders.</p>
+  </section>
 
-    <figure style="margin:0;border-bottom:2px solid #000">
-      <sc-if value="{{ open.hasVideoFile }}" hint-placeholder-val="{{ false }}">
-        <video src="{{ open.video }}" controls="{{ true }}" playsInline="{{ true }}" style="width:100%;height:clamp(240px,30vw,420px);object-fit:cover;display:block;filter:grayscale(1) contrast(1.08)"></video>
-      </sc-if>
-      <sc-if value="{{ open.noVideoFile }}" hint-placeholder-val="{{ true }}">
-        <div style="height:clamp(240px,30vw,420px);filter:grayscale(1) contrast(1.08)">
-          <image-slot id="{{ open.detailSlot }}" shape="rect" fit="cover" placeholder="Drop a photo or video still from this experiment"></image-slot>
+  <section id="register" data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);border-bottom:2px solid #000;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:start">
+    <div>
+      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">Register your interest</div>
+      <h2 style="font-size:clamp(28px,3.6vw,48px);line-height:1.03;margin:0 0 16px">Put your hand up.</h2>
+      <p style="font-size:17px;line-height:1.6;margin:0;color:rgba(0,0,0,.72);max-width:44ch">We're still forming this. Tell us what you're building and we'll come back to you as places and dates firm up — and if it's a fit, we'll talk properly.</p>
+    </div>
+    <div style="border:2px solid #000;padding:clamp(18px,2.5vw,30px)">
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;gap:12px;padding:24px 0">
+          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#c91a09">Received</div>
+          <div style="font-size:24px;font-weight:800;line-height:1.15">We'll be in touch as this takes shape.</div>
+          <p style="font-size:15px;color:rgba(0,0,0,.72);margin:0">Meanwhile: whatever you wrote in that last box — go and talk to someone about it this week.</p>
         </div>
       </sc-if>
-    </figure>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ onSubmit }}" style="display:grid;gap:14px">
+        <div class="field" style="display:grid;gap:6px"><label for="p-name" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Your name</label><input id="p-name" class="input" required="required" placeholder="" style="width:100%;box-sizing:border-box"></div>
+        <div class="field" style="display:grid;gap:6px"><label for="p-email" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Email</label><input id="p-email" class="input" type="email" required="required" placeholder="" style="width:100%;box-sizing:border-box"></div>
+        <div class="field" style="display:grid;gap:6px"><label for="p-building" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">What are you building?</label><input id="p-building" class="input" required="required" placeholder="One line. The version you&#39;d say out loud." style="width:100%;box-sizing:border-box"></div>
+        <div class="field" style="display:grid;gap:6px"><label for="p-stage" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Where are you?</label><select id="p-stage" class="input" style="width:100%;box-sizing:border-box"><option>Idea, nothing built yet</option><option>Built something, no users</option><option>Users, no revenue</option><option>Revenue, figuring out what's next</option><option>Raising</option></select></div>
+        <div class="field" style="display:grid;gap:6px"><label for="p-stuck" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">What are you stuck on right now?</label><textarea id="p-stuck" class="input" rows="4" placeholder="Be honest. This is the one we actually read." style="width:100%;box-sizing:border-box"></textarea></div>
+        <button type="submit" class="btn btn-block" style="justify-content:flex-start;font-size:15px;padding:14px 22px;background:#c91a09;color:#fff" style-hover="background:#000">Register your interest →</button>
+        <p style="font-size:12px;color:rgba(0,0,0,.72);margin:0">No application form, no pitch deck. We'll read every one.</p>
+      </form>
+      </sc-if>
+    </div>
+  </section>
 
-    <section style="border-bottom:2px solid #000;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,56px);align-items:start">
-      <div>
-        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:16px">The write-up</div>
-        <div style="border:2px solid #000;overflow:hidden;display:grid;gap:0;background:#fff">
-          <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:14px 16px"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:4px">Format</div><div style="font-size:16px;font-weight:700">{{ open.kind }}</div></div>
-          <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:14px 16px"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:4px">Setting</div><div style="font-size:16px;font-weight:700">{{ open.setting }}</div></div>
-          <div style="background:#fff;border-bottom:2px solid #000;box-sizing:border-box;padding:14px 16px"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:4px">Status</div><div style="font-size:16px;font-weight:700">{{ open.status }}</div></div>
-        </div>
-      </div>
-      <div style="grid-column:span 2;min-width:0">
-        <sc-for list="{{ open.body }}" as="para" hint-placeholder-count="3">
-          <p style="font-size:17px;line-height:1.65;margin:0 0 16px;color:rgba(0,0,0,.72)">{{ para }}</p>
-        </sc-for>
-        <div style="border-top:2px solid #000;padding-top:18px;margin-top:8px">
-          <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px">What we learned</div>
-          <p style="font-size:18px;line-height:1.5;font-weight:700;margin:0">{{ open.learned }}</p>
-        </div>
-      </div>
-    </section>
+  <section style="background:#f2cd37;color:#000;padding:clamp(44px,6vw,96px) clamp(16px,4vw,56px);border-bottom:2px solid #000">
+    <p style="font-size:clamp(30px,5vw,68px);line-height:1.02;letter-spacing:-.03em;font-weight:900;margin:0;max-width:20ch">Ready to play?</p>
+  </section>
 
-    <section style="padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);border-bottom:2px solid #000">
-      <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:18px">More from the playground</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(max(240px,45%),1fr));gap:0;background:#fff;border:2px solid #000;overflow:hidden">
-        <sc-for list="{{ others }}" as="post" hint-placeholder-count="4">
-          <div style="background:#fff;border-right:2px solid #000;border-bottom:2px solid #000;box-sizing:border-box;padding:18px 16px 22px;cursor:pointer" onClick="{{ post.open }}" style-hover="background:#f6f6f6">
-            <div style="width:100%;height:8px;margin-bottom:12px;background:{{ post.color }}"></div>
-            <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.72);margin-bottom:6px">{{ post.kind }} · {{ post.date }}</div>
-            <div style="font-size:19px;font-weight:800;line-height:1.15">{{ post.title }}</div>
-          </div>
-        </sc-for>
-      </div>
-    </section>
-  </div>
-  </sc-if>
+  <section data-reveal style="opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;padding:clamp(36px,5vw,72px) clamp(16px,4vw,56px);border-bottom:2px solid #000;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,56px)">
+    <p style="font-size:17px;line-height:1.6;margin:0;color:rgba(0,0,0,.72);max-width:44ch">Everything we're doing and thinking is on LinkedIn. Write-ups from our sessions, what's working, what isn't. <a href="https://www.linkedin.com/company/opensoch" target="_blank" rel="noopener" style="color:#c91a09;font-weight:600;white-space:nowrap">Follow OpenSoch →</a></p>
+    <p style="font-size:17px;line-height:1.6;margin:0;color:rgba(0,0,0,.72);max-width:44ch"><strong style="color:#000;font-weight:800">Collaborating.</strong> Universities, incubators and companies building founder programmes of their own — we're open to it, and we've got opinions. <a href="mailto:hello@opensoch.org" style="color:#c91a09;font-weight:600">hello@opensoch.org</a>.</p>
+  </section>
 
   <footer style="border-top:2px solid #000;padding:28px clamp(16px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;align-items:start">
     <div>
@@ -210,132 +155,33 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const POSTS = [
-  {
-    id: "butterfly", pinned: true, date: "Aug 2026", color: "#c91a09",
-    kind: "Session coverage", title: "Sixty seconds, eight bricks, twenty-five butterflies",
-    tagline: "Eight identical LEGO pieces. One minute. One absurd instruction.",
-    summary: "How the butterfly brief landed at this month's kickoff, and why the walk-around turned out to be the actual product.",
-    status: "In rotation", setting: "Cohort kickoffs", video: "",
-    body: [
-      "We wanted to know what happens if every person in a room is handed exactly the same material and exactly the same impossible brief. No advantage from experience, no advantage from budget, no time to strategise.",
-      "The first run was a side session at somebody else's event. Twenty-five founders, eight pieces each, sixty seconds on the clock. Nobody produced a convincing butterfly. Everybody produced something, and everybody wanted to see what the person next to them had done.",
-      "That walk-around turned out to be the actual product. We formalised it into the four stages — Banao, Dekho, Badlo, Bolo — and the sequence has held through every version since."
-    ],
-    learned: "Constraint plus absurdity beats instruction. The brief has to be impossible enough that nobody can protect their reputation with it."
-  },
-  {
-    id: "drums", pinned: true, date: "Jul 2026", color: "#f2cd37",
-    kind: "Collaboration", title: "One room, one beat: drumming with the Karachi percussionists",
-    tagline: "The oldest group technology there is, borrowed for a room of innovators.",
-    summary: "We brought in musicians who run community drumming and asked whether the same arc works for people who met an hour ago. It does — with one rule.",
-    status: "In rotation", setting: "Kickoffs · Retreats", video: "",
-    body: [
-      "This one came from outside the startup world. We worked with percussionists who run community drumming and asked whether the same arc could work for a room of people who had met an hour earlier.",
-      "It can, with one adjustment: nobody is allowed to be taught. The moment it becomes a lesson, people start worrying about being bad at it. Guided into a shared pulse without instruction, the room locks in within a few minutes.",
-      "We now also arrange live music and original performances as bookends around the sessions themselves."
-    ],
-    learned: "Skill-free physical synchrony builds trust faster than any structured icebreaker we have tried."
-  },
-  {
-    id: "circles", date: "Jun 2026", color: "#0055bf",
-    kind: "Format note", title: "We took the chairs out of the first twenty minutes",
-    tagline: "What if the opening of an event had nowhere to sit?",
-    summary: "Open Circles started as an experiment in removing furniture. It now opens the full four hour arc.",
-    status: "In rotation", setting: "Conferences · Demo days",
-    body: [
-      "Standard event openings are designed for the organisers: registration, seating, a welcome from the stage. By the time anyone speaks to a stranger, they have already spent forty minutes rehearsing being alone in public.",
-      "We took the chairs out of the first twenty minutes and replaced them with a standing circle and a run of rapid-fire questions — short, specific, and impossible to hide behind.",
-      "The measurable change is simple: everyone in the circle speaks within five minutes of arriving, and the ratio of people talking to people scrolling flips before the programme even starts."
-    ],
-    learned: "A room's social norm is set in the first ten minutes and is very hard to change afterwards. Spend the format budget there."
-  },
-  {
-    id: "deepdive", date: "Jun 2026", color: "#81007b",
-    kind: "In testing", title: "Advice you have to use before you're allowed to leave",
-    tagline: "One idea, applied to your own venture in the room.",
-    summary: "A Deep Dive variant with a strict rule: no takeaways. Running it a third time this quarter before we call it finished.",
-    status: "Testing", setting: "Programmes · Workshops",
-    body: [
-      "The prototype rule was strict: no takeaways. Whatever the expert brings — a pricing framework, a model for improvising under pressure — everyone has to run their own venture, project or team through it while still sitting in the room.",
-      "It slows the session down enormously. One idea replaces the usual five, and the facilitator spends most of the time moving between tables rather than presenting.",
-      "It also produces the only kind of feedback we trust: people arguing with the framework because they have just discovered where it breaks for them."
-    ],
-    learned: "Application in the room is worth more than coverage. Cut the content until it fits inside the time people need to actually use it."
-  },
-  {
-    id: "postmortem", date: "In the pipeline", color: "#000000",
-    kind: "Idea we're toying with", title: "Post-Mortem Night",
-    tagline: "An evening of founders explaining exactly how it went wrong.",
-    summary: "Survivor stories are the worst available data. We're building an evening around the other kind. Looking for a venue and four honest speakers.",
-    status: "Draft", setting: "Community nights",
-    body: [
-      "Survivor stories are the worst available data, and they are the only stories this ecosystem tells. Post-Mortem Night is the attempt at the opposite: founders walking a room through a venture that died, in order, without the redemption arc.",
-      "The format is deliberately unglamorous — no stage, no slides, a timer, and a room that has agreed in advance not to console anyone mid-sentence.",
-      "Replace this write-up with the real one once the first night has run."
-    ],
-    learned: "Draft — to be written after the first session."
-  },
-  {
-    id: "coffeeshop", date: "In the pipeline", color: "#c91a09",
-    kind: "Initiative", title: "The coffee shop sessions",
-    tagline: "The whole arc, run in a room that was never built for it.",
-    summary: "Our own open community sessions: no programme, no badge, no AV. Monthly from next quarter — tell us if you want the first invite.",
-    status: "Draft", setting: "Cafés · Small rooms",
-    body: [
-      "We have run these sessions at cohort kickoffs, at demo days, and in ordinary coffee shops. The last one is the interesting constraint: no stage, no AV, no floor space, and other people's conversations in the background.",
-      "Stripping the format down to what survives that room turned out to be the best test of which parts actually matter.",
-      "Replace this write-up with the real one."
-    ],
-    learned: "If a format needs a venue, it isn't a format yet."
-  },
-  {
-    id: "kit", date: "In the pipeline", color: "#f2cd37",
-    kind: "Bet we're placing", title: "The eight-piece kit, packed for other people",
-    tagline: "An open version of the butterfly brief that partners can run themselves.",
-    summary: "Partners keep asking to run the sequence between our sessions. We're packaging it — pieces, timings, facilitator notes — and giving it away.",
-    status: "Draft", setting: "Partners · Programmes",
-    body: [
-      "Partners keep asking whether they can run the butterfly sequence themselves between our sessions. This is the packaged answer: the pieces, the timing, the four stages and the facilitator notes.",
-      "Replace this write-up with the real one once the kit exists."
-    ],
-    learned: "Draft — to be written."
-  }
-];
-
 class Component extends DCLogic {
-  state = { openId: null };
-
-  open(id) {
-    this.setState({ openId: id });
-    window.scrollTo({ top: 0, behavior: "auto" });
+  state = { submitted: false };
+  componentDidMount() {
+    const reveal = (el) => { el.style.opacity = "1"; el.style.transform = "none"; };
+    const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
+    nodes.forEach((n) => { if (n.getBoundingClientRect().top < window.innerHeight) reveal(n); });
+    if (!("IntersectionObserver" in window)) { nodes.forEach(reveal); return; }
+    this._io = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) { reveal(e.target); this._io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    nodes.forEach((n) => this._io.observe(n));
+    this._fallback = setTimeout(() => nodes.forEach(reveal), 2500);
   }
-
-  decorate(p) {
-    return Object.assign({}, p, {
-      pinSlot: "pgpin-" + p.id,
-      detailSlot: "pg-" + p.id,
-      hasVideoFile: !!p.video,
-      noVideoFile: !p.video,
-      open: () => this.open(p.id)
+  componentDidUpdate() {
+    document.querySelectorAll("[data-reveal]").forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) { el.style.opacity = "1"; el.style.transform = "none"; }
     });
   }
-
+  componentWillUnmount() { if (this._io) this._io.disconnect(); clearTimeout(this._fallback); }
   renderVals() {
-    const openId = this.state.openId;
-    const open = POSTS.find((p) => p.id === openId);
     return {
-      pinned: POSTS.filter((p) => p.pinned).map((p) => this.decorate(p)),
-      updates: POSTS.filter((p) => !p.pinned).map((p) => this.decorate(p)),
-      others: POSTS.filter((p) => p.id !== openId).slice(0, 4).map((p) => this.decorate(p)),
-      open: open ? this.decorate(open) : {},
-      showIndex: !open,
-      showDetail: !!open,
-      back: () => this.setState({ openId: null })
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      onSubmit: (e) => { e.preventDefault(); this.setState({ submitted: true }); }
     };
   }
 }
-
 </script>
 </body>
 </html>

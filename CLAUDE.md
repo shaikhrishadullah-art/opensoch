@@ -24,6 +24,8 @@ Plus **Backstory**, the company's own history.
 
 **Out of scope:** their content and design, which is the artboards' business and is marked final. Do not rewrite the copy on Experiences, Coaching or Backstory.
 
+**Playground is the exception.** It was rebuilt from a later copy brief as the Coffee Shop Cohort — a single page ending in one interest form. The blog it used to be (post array, post grid, detail view) is gone. Its copy is final in the same way the other three are.
+
 **Explicit non-goals:** SEO, meta tags, structured data, analytics, marketing conventions. The home page is deliberately unconventional and content-light. Do not add hero copy, a nav bar, scroll sections, or a cookie banner. Do not propose changes on these grounds.
 
 ---
@@ -229,7 +231,7 @@ The brain is the front door. Everything behind it is an ordinary site with its o
 | `/experiences` | Experiences | purple, top-left |
 | `/coaching` | Coaching | blue, top-right |
 | `/backstory` | Backstory | red, bottom-left |
-| `/playground` | Playground | yellow, bottom-right — a blog, so it grows post URLs beneath it |
+| `/playground` | Playground | yellow, bottom-right — the Coffee Shop Cohort, with the interest form at `#register` |
 
 Each section is a single page with its own URL and the site's own navigation. Once someone is inside, they navigate by that nav, not by the brain. The nav's logo is the only way back to the brain, and it returns to the closed colour state.
 
